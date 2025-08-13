@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main>test</main>
+  <main class="bg-green-50">13</main>
 </template>
