@@ -23,7 +23,7 @@ const expenseList = [
   { date: "2025-08-08", name: "吉伊卡哇 - 水槍兔新品", category: "entertainment", amount: 2398 },
   { date: "2025-08-07", name: "Uber - 肚子痛", category: "transportation", amount: 76 },
   { date: "2025-08-07", name: "阿辰", category: "other", amount: 167 },
-  { date: "2025-08-07", name: "晚餐 - 鐵炭魂創意料理工作室", category: "food", amount: 833 },
+  { date: "2025-08-07", name: "晚餐 - 鐵炭魂", category: "food", amount: 833 },
   { date: "2025-08-03", name: "咖啡廳 - Table 2 Coffee Roaster", category: "food", amount: 300 },
   { date: "2025-08-03", name: "午餐 - 本根咖哩", category: "food", amount: 250 },
   { date: "2025-08-02", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },

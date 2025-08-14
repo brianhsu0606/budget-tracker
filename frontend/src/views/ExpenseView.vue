@@ -203,8 +203,9 @@ onMounted(() => {
 
   <!-- 圓餅圖 -->
   <el-row :gutter="20">
-    <!-- 左邊 -->
-    <el-col :span="12">
+    <!-- 左邊 圓餅圖、各分類金額 -->
+    <el-col :span="10">
+      <!-- 圓餅圖 -->
       <el-card class="mb-4">
         <header class="relative flex items-center justify-end text-lg font-bold">
           <h3 class="absolute left-1/2 -translate-x-1/2">{{ selectedMonth }} 支出</h3>
@@ -212,41 +213,46 @@ onMounted(() => {
         </header>
         <v-chart :option="pieOption" autoresize style="height: 280px"></v-chart>
       </el-card>
-    </el-col>
 
-    <!-- 右邊 -->
-    <el-col :span="12">
+      <!-- 各分類金額 -->
       <el-card>
-        <header class="flex items-center text-lg font-bold border-b mb-2">
+        <header class="flex items-center text-lg font-bold p-2">
           <h3 class="w-[40%]">分類</h3>
           <p class="w-[30%]">金額</p>
-          <p class="w-[30%]">比率</p>
+          <p class="w-[30%]">比例</p>
         </header>
-        <div v-for="data in categoryMap" :key="data.title" class="flex items-center mb-2">
-          <div class="w-[10%]">
+        <div
+          v-for="data in categoryMap"
+          :key="data.title"
+          class="flex items-center border-t p-2 text-lg font-medium hover:bg-gray-200 transition"
+        >
+          <div class="flex items-center gap-4 w-[40%]">
             <component :is="data.icon" class="p-1 w-10 rounded-lg" :class="data.color"></component>
+            <h3>{{ data.title }}</h3>
           </div>
-          <h3 class="w-[30%]">{{ data.title }}</h3>
+
           <p class="w-[30%]">{{ data.amount.toLocaleString() }}</p>
           <p class="w-[30%]">{{ data.percentage }} %</p>
         </div>
       </el-card>
     </el-col>
-  </el-row>
 
-  <!-- Table 支出列表 -->
-  <el-card>
-    <el-table :data="filteredExpenseList">
-      <el-table-column prop="date" label="日期" />
-      <el-table-column prop="name" label="花費項目" />
-      <el-table-column prop="category" label="分類">
-        <template #default="{ row }">
-          {{ categoryNameMap[row.category] }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="amount" label="金額" />
-    </el-table>
-  </el-card>
+    <!-- 右邊 表格 -->
+    <el-col :span="14">
+      <el-card>
+        <el-table :data="filteredExpenseList">
+          <el-table-column prop="date" label="日期" />
+          <el-table-column prop="name" label="花費項目" min-width="140" />
+          <el-table-column prop="category" label="分類">
+            <template #default="{ row }">
+              {{ categoryNameMap[row.category] }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="amount" label="金額" />
+        </el-table>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <style scoped lang="scss"></style>
