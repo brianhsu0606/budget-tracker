@@ -2,6 +2,8 @@
 import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-tw'
+dayjs.locale('zh-tw')
 
 interface Expense {
   date: string
@@ -211,7 +213,7 @@ onMounted(() => {
           <h3 class="absolute left-1/2 -translate-x-1/2">{{ selectedMonth }} 支出</h3>
           <h3>總花費：{{ totalCost.toLocaleString() }}</h3>
         </header>
-        <v-chart :option="pieOption" autoresize style="height: 280px"></v-chart>
+        <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
       </el-card>
 
       <!-- 各分類金額 -->
@@ -230,7 +232,6 @@ onMounted(() => {
             <component :is="data.icon" class="p-1 w-10 rounded-lg" :class="data.color"></component>
             <h3>{{ data.title }}</h3>
           </div>
-
           <p class="w-[30%]">{{ data.amount.toLocaleString() }}</p>
           <p class="w-[30%]">{{ data.percentage }} %</p>
         </div>
@@ -241,7 +242,11 @@ onMounted(() => {
     <el-col :span="14">
       <el-card>
         <el-table :data="filteredExpenseList">
-          <el-table-column prop="date" label="日期" />
+          <el-table-column prop="date" label="日期" min-width="120">
+            <template #default="{ row }">
+              {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
+            </template>
+          </el-table-column>
           <el-table-column prop="name" label="花費項目" min-width="140" />
           <el-table-column prop="category" label="分類">
             <template #default="{ row }">
@@ -249,6 +254,10 @@ onMounted(() => {
             </template>
           </el-table-column>
           <el-table-column prop="amount" label="金額" />
+          <el-table-column label="操作" min-width="130">
+            <el-button type="primary">編輯</el-button>
+            <el-button type="danger">刪除</el-button>
+          </el-table-column>
         </el-table>
       </el-card>
     </el-col>
