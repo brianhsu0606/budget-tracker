@@ -132,7 +132,7 @@ const categoryNameMap: Record<string, string> = {
 const pieData = computed(() => {
   return categories.map((c) => ({
     name: c.title,
-    value: categorySums.value[c.key] || 0,
+    value: categorySums.value[c.key],
   }))
 })
 
@@ -143,13 +143,13 @@ const pieOption = computed(() => ({
   tooltip: {
     trigger: 'item',
   },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-  },
+  // legend: {
+  //   orient: 'vertical',
+  //   left: 'left',
+  // },
   series: [
     {
-      name: 'Access From',
+      name: '分類',
       type: 'pie',
       radius: '60%',
       data: pieData.value,
@@ -159,6 +159,16 @@ const pieOption = computed(() => ({
           shadowOffsetX: 0,
           shadowColor: 'rgba(0, 0, 0, 0.5)',
         },
+      },
+      label: {
+        show: true,
+        formatter: (params) =>
+          params.value === 0 ? '' : `${params.name}: ${params.percent.toFixed(1)}%`,
+        fontSize: 14,
+        fontWeight: 500,
+      },
+      labelLine: {
+        show: true, // 連線到圖外
       },
     },
   ],
@@ -207,12 +217,17 @@ onMounted(() => {
     <!-- 右邊 -->
     <el-col :span="12">
       <el-card>
+        <header class="flex items-center text-lg font-bold border-b mb-2">
+          <h3 class="w-[40%]">分類</h3>
+          <p class="w-[30%]">金額</p>
+          <p class="w-[30%]">比率</p>
+        </header>
         <div v-for="data in categoryMap" :key="data.title" class="flex items-center mb-2">
           <div class="w-[10%]">
             <component :is="data.icon" class="p-1 w-10 rounded-lg" :class="data.color"></component>
           </div>
           <h3 class="w-[30%]">{{ data.title }}</h3>
-          <p class="w-[30%]">NT$ {{ data.amount.toLocaleString() }}</p>
+          <p class="w-[30%]">{{ data.amount.toLocaleString() }}</p>
           <p class="w-[30%]">{{ data.percentage }} %</p>
         </div>
       </el-card>
