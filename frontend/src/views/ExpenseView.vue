@@ -30,6 +30,82 @@ const filteredExpenseList = computed(() => {
   )
 })
 
+// const categorySum = (category: string) => {
+//   const categoryCost = computed(() => {
+//     return filteredExpenseList.value
+//       .filter((item) => item.category === category)
+//       .reduce((sum, item) => item.amount + sum, 0)
+//   })
+//   return categoryCost.value
+// }
+
+// const totalCost = computed(() => {
+//   return filteredExpenseList.value.reduce((sum, item) => item.amount + sum, 0)
+// })
+
+// const category: string[] = ['food', 'transportation', 'entertainment', 'shopping', 'daily', 'other']
+// const categoryMap = computed(() => [
+//   {
+//     title: '飲食',
+//     amount: categorySum('food'),
+//     icon: 'KnifeFork',
+//     color: 'bg-blue-400',
+//     percentage: categorySum('food') / totalCost.value,
+//   },
+//   { title: '交通', amount: categorySum('transportation'), icon: 'Van', color: 'bg-gray-400' },
+//   {
+//     title: '娛樂',
+//     amount: categorySum('entertainment'),
+//     icon: 'SwitchFilled',
+//     color: 'bg-red-400',
+//   },
+//   { title: '購物', amount: categorySum('shopping'), icon: 'Handbag', color: 'bg-gray-400' },
+//   { title: '日常用品', amount: categorySum('daily'), icon: 'Van', color: 'bg-gray-400' },
+//   { title: '其他', amount: categorySum('other'), icon: 'Document', color: 'bg-gray-400' },
+// ])
+
+// GPT
+// 分類清單
+const categories = [
+  { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
+  { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-gray-400' },
+  { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
+  { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-gray-400' },
+  { key: 'daily', title: '日常用品', icon: 'Van', color: 'bg-gray-400' },
+  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
+]
+
+// 計算每個分類的總金額
+const categorySums = computed(() => {
+  return filteredExpenseList.value.reduce(
+    (acc, item) => {
+      acc[item.category] = (acc[item.category] || 0) + item.amount
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+})
+
+// 計算總金額
+const totalCost = computed(() => {
+  return filteredExpenseList.value.reduce((sum, item) => sum + item.amount, 0)
+})
+
+// 最後產出 categoryMap（包含百分比）
+const categoryMap = computed(() => {
+  return categories.map((c) => {
+    const amount = categorySums.value[c.key] || 0
+    const percentage = totalCost.value
+      ? (amount / totalCost.value) * 100 // 先乘以 100
+      : 0
+    return {
+      ...c,
+      amount,
+      percentage: percentage.toFixed(1),
+    }
+  })
+})
+
 // 圓餅圖
 const categoryNameMap: Record<string, string> = {
   food: '飲食',
@@ -54,7 +130,6 @@ const pieData = computed(() => {
 
 const pieOption = computed(() => ({
   title: {
-    text: `${selectedMonth.value} 支出分析`,
     left: 'center',
   },
   tooltip: {
@@ -101,9 +176,27 @@ onMounted(() => {
   </header>
 
   <!-- 圓餅圖 -->
-  <el-card class="mb-4">
-    <v-chart :option="pieOption" autoresize style="height: 280px"></v-chart>
-  </el-card>
+  <el-row :gutter="20">
+    <!-- 左邊 -->
+    <el-col :span="12">
+      <el-card class="mb-4">
+        <h3 class="text-lg font-bold text-center">{{ selectedMonth }} 支出</h3>
+        <v-chart :option="pieOption" autoresize style="height: 280px"></v-chart>
+      </el-card>
+    </el-col>
+
+    <!-- 右邊 -->
+    <el-col :span="12">
+      <el-card>
+        <div v-for="data in categoryMap" :key="data.title" class="flex items-center gap-4 mb-2">
+          <component :is="data.icon" class="w-10 rounded-lg" :class="data.color"></component>
+          <h3>{{ data.title }}</h3>
+          <p>NT$ {{ data.amount.toLocaleString() }}</p>
+          <p>{{ data.percentage }} %</p>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 
   <!-- Table 支出列表 -->
   <el-card>
