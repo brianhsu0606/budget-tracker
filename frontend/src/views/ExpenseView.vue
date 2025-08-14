@@ -93,17 +93,19 @@ const totalCost = computed(() => {
 
 // 最後產出 categoryMap（包含百分比）
 const categoryMap = computed(() => {
-  return categories.map((c) => {
-    const amount = categorySums.value[c.key] || 0
-    const percentage = totalCost.value
-      ? (amount / totalCost.value) * 100 // 先乘以 100
-      : 0
-    return {
-      ...c,
-      amount,
-      percentage: percentage.toFixed(1),
-    }
-  })
+  return categories
+    .map((c) => {
+      const amount = categorySums.value[c.key] || 0
+      const percentage = totalCost.value
+        ? (amount / totalCost.value) * 100 // 先乘以 100
+        : 0
+      return {
+        ...c,
+        amount,
+        percentage: percentage.toFixed(1),
+      }
+    })
+    .sort((a, b) => b.amount - a.amount) // 按金額降序排列
 })
 
 // 圓餅圖
