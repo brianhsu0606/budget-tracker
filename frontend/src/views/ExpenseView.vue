@@ -68,11 +68,11 @@ const filteredExpenseList = computed(() => {
 // 分類清單
 const categories = [
   { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
-  { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-gray-400' },
+  { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-green-400' },
   { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
-  { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-gray-400' },
-  { key: 'daily', title: '日常用品', icon: 'Van', color: 'bg-gray-400' },
-  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
+  { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-yellow-400' },
+  { key: 'daily', title: '日常用品', icon: 'Document', color: 'bg-orange-400' },
+  { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
 ]
 
 // 計算每個分類的總金額
@@ -182,7 +182,10 @@ onMounted(() => {
     <!-- 左邊 -->
     <el-col :span="12">
       <el-card class="mb-4">
-        <h3 class="text-lg font-bold text-center">{{ selectedMonth }} 支出</h3>
+        <header class="relative flex items-center justify-end text-lg font-bold">
+          <h3 class="absolute left-1/2 -translate-x-1/2">{{ selectedMonth }} 支出</h3>
+          <h3>總花費：{{ totalCost.toLocaleString() }}</h3>
+        </header>
         <v-chart :option="pieOption" autoresize style="height: 280px"></v-chart>
       </el-card>
     </el-col>
@@ -190,11 +193,13 @@ onMounted(() => {
     <!-- 右邊 -->
     <el-col :span="12">
       <el-card>
-        <div v-for="data in categoryMap" :key="data.title" class="flex items-center gap-4 mb-2">
-          <component :is="data.icon" class="w-10 rounded-lg" :class="data.color"></component>
-          <h3>{{ data.title }}</h3>
-          <p>NT$ {{ data.amount.toLocaleString() }}</p>
-          <p>{{ data.percentage }} %</p>
+        <div v-for="data in categoryMap" :key="data.title" class="flex items-center mb-2">
+          <div class="w-[10%]">
+            <component :is="data.icon" class="p-1 w-10 rounded-lg" :class="data.color"></component>
+          </div>
+          <h3 class="w-[30%]">{{ data.title }}</h3>
+          <p class="w-[30%]">NT$ {{ data.amount.toLocaleString() }}</p>
+          <p class="w-[30%]">{{ data.percentage }} %</p>
         </div>
       </el-card>
     </el-col>
