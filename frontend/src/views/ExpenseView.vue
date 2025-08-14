@@ -117,17 +117,23 @@ const categoryNameMap: Record<string, string> = {
   daily: '日常用品',
   other: '其他',
 }
+// const pieData = computed(() => {
+//   const categoryMap = filteredExpenseList.value.reduce(
+//     (acc, item) => {
+//       acc[item.category] = (acc[item.category] || 0) + item.amount
+//       return acc
+//     },
+//     {} as Record<string, number>,
+//   )
+//   return Object.entries(categoryMap).map(([name, value]) => {
+//     return { name: categoryNameMap[name], value }
+//   })
+// })
 const pieData = computed(() => {
-  const categoryMap = filteredExpenseList.value.reduce(
-    (acc, item) => {
-      acc[item.category] = (acc[item.category] || 0) + item.amount
-      return acc
-    },
-    {} as Record<string, number>,
-  )
-  return Object.entries(categoryMap).map(([name, value]) => {
-    return { name: categoryNameMap[name], value }
-  })
+  return categories.map((c) => ({
+    name: c.title,
+    value: categorySums.value[c.key] || 0,
+  }))
 })
 
 const pieOption = computed(() => ({
@@ -155,6 +161,14 @@ const pieOption = computed(() => ({
         },
       },
     },
+  ],
+  color: [
+    '#60a5fa', // bg-blue-400
+    '#4ade80', // bg-green-400
+    '#f87171', // bg-red-400
+    '#facc15', // bg-yellow-400
+    '#fb923c', // bg-orange-400
+    '#818cf8', // bg-indigo-400
   ],
 }))
 
