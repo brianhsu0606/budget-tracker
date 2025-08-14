@@ -10,7 +10,13 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import '@/assets/main.scss'
 
+import VueECharts from 'vue-echarts'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as echarts from 'echarts'
+
 const app = createApp(App)
+
+app.component('VChart', VueECharts)
 
 app.use(ElementPlus)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
