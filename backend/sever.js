@@ -17,7 +17,7 @@ app.listen(port, () => {
 const expenseList = [
   { date: "2025-08-10", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
   { date: "2025-08-10", name: "晚餐 - 藏壽司", category: "food", amount: 170 },
-  { date: "2025-08-10", name: "小米電動鼻毛刀", category: "other", amount: 325 },
+  { date: "2025-08-10", name: "小米電動鼻毛刀", category: "shopping", amount: 325 },
   { date: "2025-08-10", name: "咖啡廳 - Cafe Parmentier", category: "food", amount: 280 },
   { date: "2025-08-10", name: "午餐 - 柑橘 鴨蔥", category: "food", amount: 335 },
   { date: "2025-08-08", name: "吉伊卡哇 - 水槍兔新品", category: "entertainment", amount: 2398 },

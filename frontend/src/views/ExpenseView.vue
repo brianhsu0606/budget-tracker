@@ -110,7 +110,11 @@ onMounted(() => {
     <el-table :data="filteredExpenseList">
       <el-table-column prop="date" label="日期" />
       <el-table-column prop="name" label="花費項目" />
-      <el-table-column prop="category" label="分類" />
+      <el-table-column prop="category" label="分類">
+        <template #default="{ row }">
+          {{ categoryNameMap[row.category] }}
+        </template>
+      </el-table-column>
       <el-table-column prop="amount" label="金額" />
     </el-table>
   </el-card>
