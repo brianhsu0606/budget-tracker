@@ -153,6 +153,18 @@ const pieOption = computed(() => ({
   ],
 }))
 
+// 分頁功能
+const pageSize = ref(12)
+const currentPage = ref(1)
+const handlePageChange = (page: number) => {
+  currentPage.value = page
+}
+const pagedList = computed(() => {
+  const start = pageSize.value * (currentPage.value - 1)
+  const end = pageSize.value + start
+  return filteredExpenseList.value.slice(start, end)
+})
+
 onMounted(() => {
   fetchExpenses()
 })
@@ -209,8 +221,8 @@ onMounted(() => {
 
     <!-- 右邊 表格 -->
     <el-col :span="14">
-      <el-card>
-        <el-table :data="filteredExpenseList">
+      <el-card class="mb-4">
+        <el-table :data="pagedList">
           <el-table-column prop="date" label="日期" min-width="120">
             <template #default="{ row }">
               {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
@@ -236,6 +248,15 @@ onMounted(() => {
           </el-table-column>
         </el-table>
       </el-card>
+      <!-- 分頁功能 pagination -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :current-page="currentPage"
+        :total="filteredExpenseList.length"
+        @current-change="handlePageChange"
+      />
     </el-col>
   </el-row>
 </template>
