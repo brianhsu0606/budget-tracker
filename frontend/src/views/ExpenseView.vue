@@ -77,7 +77,7 @@ const categories = [
   { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
 ]
 
-// 計算每個分類的總金額
+// 各分類的總金額，物件形式 { 'food': 1000 }
 const categorySums = computed(() => {
   return filteredExpenseList.value.reduce(
     (acc, item) => {
@@ -110,15 +110,19 @@ const categoryMap = computed(() => {
     .sort((a, b) => b.amount - a.amount) // 按金額降序排列
 })
 
+console.log(categories)
+console.log(categoryMap.value)
+console.log(categorySums.value)
+
 // 圓餅圖
-const categoryNameMap: Record<string, string> = {
-  food: '飲食',
-  transportation: '交通',
-  entertainment: '娛樂',
-  shopping: '購物',
-  daily: '日常用品',
-  other: '其他',
-}
+// const categoryNameMap: Record<string, string> = {
+//   food: '飲食',
+//   transportation: '交通',
+//   entertainment: '娛樂',
+//   shopping: '購物',
+//   daily: '日常用品',
+//   other: '其他',
+// }
 // const pieData = computed(() => {
 //   const categoryMap = filteredExpenseList.value.reduce(
 //     (acc, item) => {
@@ -209,8 +213,8 @@ onMounted(() => {
     <el-col :span="10">
       <!-- 圓餅圖 -->
       <el-card class="mb-4">
-        <header class="relative flex items-center justify-end text-lg font-bold">
-          <h3 class="absolute left-1/2 -translate-x-1/2">{{ selectedMonth }} 支出</h3>
+        <header class="flex justify-between items-center text-lg font-bold">
+          <h3>{{ selectedMonth }} 支出</h3>
           <h3>總花費：{{ totalCost.toLocaleString() }}</h3>
         </header>
         <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
@@ -250,7 +254,7 @@ onMounted(() => {
           <el-table-column prop="name" label="花費項目" min-width="140" />
           <el-table-column prop="category" label="分類">
             <template #default="{ row }">
-              {{ categoryNameMap[row.category] }}
+              {{ categories.find((c) => c.key === row.category)?.title }}
             </template>
           </el-table-column>
           <el-table-column prop="amount" label="金額" />
