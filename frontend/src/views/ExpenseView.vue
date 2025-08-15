@@ -11,6 +11,12 @@ interface Expense {
   category: string
   amount: number
 }
+interface Category {
+  key: string
+  title: string
+  icon: string
+  color: string
+}
 
 const expenseList = ref<Expense[]>([])
 
@@ -32,43 +38,8 @@ const filteredExpenseList = computed(() => {
   )
 })
 
-// const categorySum = (category: string) => {
-//   const categoryCost = computed(() => {
-//     return filteredExpenseList.value
-//       .filter((item) => item.category === category)
-//       .reduce((sum, item) => item.amount + sum, 0)
-//   })
-//   return categoryCost.value
-// }
-
-// const totalCost = computed(() => {
-//   return filteredExpenseList.value.reduce((sum, item) => item.amount + sum, 0)
-// })
-
-// const category: string[] = ['food', 'transportation', 'entertainment', 'shopping', 'daily', 'other']
-// const categoryMap = computed(() => [
-//   {
-//     title: '飲食',
-//     amount: categorySum('food'),
-//     icon: 'KnifeFork',
-//     color: 'bg-blue-400',
-//     percentage: categorySum('food') / totalCost.value,
-//   },
-//   { title: '交通', amount: categorySum('transportation'), icon: 'Van', color: 'bg-gray-400' },
-//   {
-//     title: '娛樂',
-//     amount: categorySum('entertainment'),
-//     icon: 'SwitchFilled',
-//     color: 'bg-red-400',
-//   },
-//   { title: '購物', amount: categorySum('shopping'), icon: 'Handbag', color: 'bg-gray-400' },
-//   { title: '日常用品', amount: categorySum('daily'), icon: 'Van', color: 'bg-gray-400' },
-//   { title: '其他', amount: categorySum('other'), icon: 'Document', color: 'bg-gray-400' },
-// ])
-
-// GPT
 // 分類清單
-const categories = [
+const categories: Category[] = [
   { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
   { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-green-400' },
   { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
@@ -77,7 +48,7 @@ const categories = [
   { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
 ]
 
-// 各分類的總金額，物件形式 { 'food': 1000 }
+// 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
 const categorySums = computed(() => {
   return filteredExpenseList.value.reduce(
     (acc, item) => {
@@ -93,26 +64,20 @@ const totalCost = computed(() => {
   return filteredExpenseList.value.reduce((sum, item) => sum + item.amount, 0)
 })
 
-// 最後產出 categoryMap（包含百分比）
+// 將 categories 多兩個屬性 amount, percentage
 const categoryMap = computed(() => {
   return categories
     .map((c) => {
       const amount = categorySums.value[c.key] || 0
-      const percentage = totalCost.value
-        ? (amount / totalCost.value) * 100 // 先乘以 100
-        : 0
+      const percentage = totalCost.value ? (amount / totalCost.value) * 100 : 0
       return {
         ...c,
         amount,
         percentage: percentage.toFixed(1),
       }
     })
-    .sort((a, b) => b.amount - a.amount) // 按金額降序排列
+    .sort((a, b) => b.amount - a.amount)
 })
-
-console.log(categories)
-console.log(categoryMap.value)
-console.log(categorySums.value)
 
 // 圓餅圖
 // const categoryNameMap: Record<string, string> = {
