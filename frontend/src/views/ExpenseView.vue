@@ -219,7 +219,14 @@ onMounted(() => {
           <el-table-column prop="name" label="花費項目" min-width="140" />
           <el-table-column prop="category" label="分類">
             <template #default="{ row }">
-              {{ categories.find((c) => c.key === row.category)?.title }}
+              <div class="flex items-center gap-2">
+                <span>{{ categories.find((c) => c.key === row.category)?.title }} </span>
+                <component
+                  :is="categories.find((c) => c.key === row.category)?.icon"
+                  :class="categories.find((c) => c.key === row.category)?.color"
+                  class="w-7 p-1 rounded-lg"
+                />
+              </div>
             </template>
           </el-table-column>
           <el-table-column prop="amount" label="金額" />
