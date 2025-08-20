@@ -1,4 +1,17 @@
-module.exports = [
+const expenseList = [
+  { date: "2025-08-20", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
+  { date: "2025-08-20", name: "咖啡廳 - 豆一昌", category: "food", amount: 200 },
+  { date: "2025-08-19", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
+  { date: "2025-08-19", name: "Sungha Jung Tab Book * 2", category: "shopping", amount: 900 },
+  { date: "2025-08-19", name: "晚餐 - 麒麟拉麵", category: "food", amount: 270 },
+  { date: "2025-08-19", name: "咖啡廳 - Dreamers", category: "food", amount: 230 },
+  { date: "2025-08-18", name: "吉伊卡哇 - 狸貓一番賞", category: "entertainment", amount: 2900 },
+  { date: "2025-08-18", name: "咖啡廳 - 哈瓦那", category: "food", amount: 530 },
+  { date: "2025-08-16", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
+  { date: "2025-08-16", name: "晚餐 - 春水堂", category: "food", amount: 244 },
+  { date: "2025-08-16", name: "咖啡廳 - Peakie", category: "food", amount: 252 },
+  { date: "2025-08-16", name: "午餐 - Corner Stone", category: "food", amount: 550 },
+  { date: "2025-08-14", name: "吉伊卡哇 - 馬年福袋", category: "entertainment", amount: 2240 },
   { date: "2025-08-10", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
   { date: "2025-08-10", name: "晚餐 - 藏壽司", category: "food", amount: 170 },
   { date: "2025-08-10", name: "小米電動鼻毛刀", category: "shopping", amount: 325 },
@@ -7,6 +20,7 @@ module.exports = [
   { date: "2025-08-08", name: "吉伊卡哇 - 水槍兔新品", category: "entertainment", amount: 2398 },
   { date: "2025-08-09", name: "化妝棉 * 2", category: "daily", amount: 165 },
   { date: "2025-08-09", name: "午餐 - 八方雲集", category: "food", amount: 105 },
+  { date: "2025-08-08", name: "吉伊卡哇 - 水槍兔", category: "entertainment", amount: 2398 },
   { date: "2025-08-07", name: "Uber - 肚子痛", category: "transportation", amount: 76 },
   { date: "2025-08-07", name: "阿辰", category: "other", amount: 167 },
   { date: "2025-08-07", name: "晚餐 - 鐵炭魂創意料理工作室", category: "food", amount: 833 },
@@ -66,3 +80,5 @@ module.exports = [
   { date: "2025-06-08", name: "午餐 - 麒麟拉麵", category: "food", amount: 280 },
   { date: "2025-06-01", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
 ];
+
+export default expenseList;
