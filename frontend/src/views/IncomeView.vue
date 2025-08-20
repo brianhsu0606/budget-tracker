@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
+import { usePieChart } from '@/composables/usePieChart'
 dayjs.locale('zh-tw')
 
 interface Income {
@@ -77,75 +78,7 @@ const categoryMap = computed(() => {
 })
 
 // 圓餅圖
-// const categoryNameMap: Record<string, string> = {
-//   food: '飲食',
-//   transportation: '交通',
-//   entertainment: '娛樂',
-//   shopping: '購物',
-//   daily: '日常用品',
-//   other: '其他',
-// }
-// const pieData = computed(() => {
-//   const categoryMap = filteredExpenseList.value.reduce(
-//     (acc, item) => {
-//       acc[item.category] = (acc[item.category] || 0) + item.amount
-//       return acc
-//     },
-//     {} as Record<string, number>,
-//   )
-//   return Object.entries(categoryMap).map(([name, value]) => {
-//     return { name: categoryNameMap[name], value }
-//   })
-// })
-const pieData = computed(() => {
-  return categories.map((c) => ({
-    name: c.title,
-    value: categorySums.value[c.key],
-  }))
-})
-
-const pieOption = computed(() => ({
-  title: {
-    left: 'center',
-  },
-  tooltip: {
-    trigger: 'item',
-  },
-  // legend: {
-  //   orient: 'vertical',
-  //   left: 'left',
-  // },
-  series: [
-    {
-      name: '分類',
-      type: 'pie',
-      radius: '60%',
-      data: pieData.value,
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
-        },
-      },
-      label: {
-        show: true,
-        formatter: (params) =>
-          params.value === 0 ? '' : `${params.name}: ${params.percent.toFixed(1)}%`,
-        fontSize: 14,
-        fontWeight: 500,
-      },
-      labelLine: {
-        show: true, // 連線到圖外
-      },
-    },
-  ],
-  color: [
-    '#4ade80', // bg-green-400
-    '#f87171', // bg-red-400
-    '#60a5fa', // bg-blue-400
-  ],
-}))
+const { pieOption } = usePieChart(categories, categorySums)
 
 // 分頁功能
 const pageSize = ref(12)

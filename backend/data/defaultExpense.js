@@ -1,5 +1,6 @@
 const expenseList = [
   { date: "2025-08-20", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
+  { date: "2025-08-20", name: "晚餐 - 加分火鍋", category: "food", amount: 371 },
   { date: "2025-08-20", name: "咖啡廳 - 豆一昌", category: "food", amount: 200 },
   { date: "2025-08-19", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
   { date: "2025-08-19", name: "Sungha Jung Tab Book * 2", category: "shopping", amount: 900 },

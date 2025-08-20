@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import expenseList from "./data/defaultExpense.js";
 import incomeList from "./data/defaultIncome.js";
+
 const app = express();
 const port = 3000;
 
