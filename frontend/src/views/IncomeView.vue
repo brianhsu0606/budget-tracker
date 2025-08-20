@@ -4,6 +4,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 import { usePieChart } from '@/composables/usePieChart'
+import { usePagination } from '@/composables/usePagination'
 import type { Income, Category } from '@/types/type'
 dayjs.locale('zh-tw')
 
@@ -69,16 +70,7 @@ const categoryMap = computed(() => {
 const { pieOption } = usePieChart(categories, categorySums)
 
 // 分頁功能
-const pageSize = ref(12)
-const currentPage = ref(1)
-const handlePageChange = (page: number) => {
-  currentPage.value = page
-}
-const pagedList = computed(() => {
-  const start = pageSize.value * (currentPage.value - 1)
-  const end = pageSize.value + start
-  return filteredIncomeList.value.slice(start, end)
-})
+const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(filteredIncomeList)
 
 onMounted(() => {
   fetchIncomes()
