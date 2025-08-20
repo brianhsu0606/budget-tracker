@@ -4,20 +4,8 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 import { usePieChart } from '@/composables/usePieChart'
+import type { Expense, Category } from '@/types/type'
 dayjs.locale('zh-tw')
-
-interface Expense {
-  date: string
-  name: string
-  category: string
-  amount: number
-}
-interface Category {
-  key: string
-  title: string
-  icon: string
-  color: string
-}
 
 const expenseList = ref<Expense[]>([])
 

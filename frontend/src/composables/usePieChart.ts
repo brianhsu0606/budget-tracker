@@ -1,11 +1,5 @@
 import { computed, type Ref } from 'vue'
-
-interface Category {
-  key: string
-  title: string
-  icon: string
-  color: string
-}
+import type { Category } from '@/types/type'
 
 export function usePieChart(categories: Category[], categorySums: Ref<Record<string, number>>) {
   const pieData = computed(() => {
