@@ -22,12 +22,22 @@ const fetchExpenses = async () => {
 // 月份篩選
 const currentMonth: string = dayjs().format('YYYY-MM')
 const selectedMonth = ref<string>(currentMonth)
+
+const selectedCategory = ref<string | null>(null)
+const filterByCategory = (key: string | null) => {
+  selectedCategory.value = key
+}
+
 const filteredExpenseList = computed(() => {
   return expenseList.value.filter(
     (expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value,
   )
 })
-
+const tableList = computed(() => {
+  return expenseList.value
+    .filter((expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value)
+    .filter((expense) => !selectedCategory.value || expense.category === selectedCategory.value)
+})
 // 分類清單
 const categories: Category[] = [
   { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
@@ -73,7 +83,9 @@ const categoryMap = computed(() => {
 const { pieOption } = usePieChart(categories, categorySums)
 
 // 分頁功能
-const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(filteredExpenseList)
+const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tableList)
+
+const categoryButtons = [{ key: null, title: '全部' }, ...categories]
 
 onMounted(() => {
   fetchExpenses()
@@ -94,7 +106,7 @@ onMounted(() => {
     />
   </header>
 
-  <!-- 圓餅圖 -->
+  <!-- 內容區，分左右 -->
   <el-row :gutter="20">
     <!-- 左邊 圓餅圖、各分類金額 -->
     <el-col :span="10">
@@ -131,6 +143,16 @@ onMounted(() => {
 
     <!-- 右邊 表格 -->
     <el-col :span="14">
+      <header class="flex mb-4">
+        <el-button
+          v-for="category in categoryButtons"
+          :key="category.key"
+          @click="filterByCategory(category.key)"
+          class="flex-1 text-white"
+        >
+          {{ category.title }}
+        </el-button>
+      </header>
       <el-card class="mb-4">
         <el-table :data="pagedList">
           <el-table-column prop="date" label="日期" min-width="120">
