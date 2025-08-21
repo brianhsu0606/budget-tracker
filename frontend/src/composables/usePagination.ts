@@ -1,4 +1,4 @@
-import { ref, computed, type Ref, watch } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
 
 export const usePagination = <T>(list: Ref<T[]>) => {
   const pageSize = ref<number>(12)

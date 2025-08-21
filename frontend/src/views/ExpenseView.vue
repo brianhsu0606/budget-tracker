@@ -141,8 +141,9 @@ onMounted(() => {
       </el-card>
     </el-col>
 
-    <!-- 右邊 表格 -->
+    <!-- 右邊 分類按鈕、表格 -->
     <el-col :span="14">
+      <!-- 分類按鈕 -->
       <header class="flex mb-4">
         <el-button
           v-for="category in categoryButtons"
@@ -153,6 +154,8 @@ onMounted(() => {
           {{ category.title }}
         </el-button>
       </header>
+
+      <!-- 表格 -->
       <el-card class="mb-4">
         <el-table :data="pagedList">
           <el-table-column prop="date" label="日期" min-width="120">
@@ -180,13 +183,14 @@ onMounted(() => {
           </el-table-column>
         </el-table>
       </el-card>
+
       <!-- 分頁功能 pagination -->
       <el-pagination
         background
         layout="prev, pager, next"
         :page-size="pageSize"
         :current-page="currentPage"
-        :total="filteredExpenseList.length"
+        :total="tableList.length"
         @current-change="handlePageChange"
       />
     </el-col>
