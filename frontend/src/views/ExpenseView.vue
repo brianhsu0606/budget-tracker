@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
 import type { Transaction, Category } from '@/types/type'
+import { onMounted, ref, computed } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import axios from 'axios'
@@ -155,9 +155,9 @@ onMounted(() => {
         </el-button>
       </header>
 
-      <!-- 表格 -->
+      <!-- 表格 table -->
       <el-card class="mb-4">
-        <el-table :data="pagedList">
+        <el-table :data="pagedList" border>
           <el-table-column prop="date" label="日期" min-width="120">
             <template #default="{ row }">
               {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
@@ -176,7 +176,11 @@ onMounted(() => {
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="amount" label="金額" />
+          <el-table-column prop="amount" label="金額" align="right" header-align="left">
+            <template #default="{ row }">
+              {{ row.amount.toLocaleString() }}
+            </template>
+          </el-table-column>
           <el-table-column label="操作" min-width="130">
             <el-button type="primary">編輯</el-button>
             <el-button type="danger">刪除</el-button>
