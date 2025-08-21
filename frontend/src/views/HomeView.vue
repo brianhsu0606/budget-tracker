@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-
 import dayjs from 'dayjs'
 import axios from 'axios'
 
@@ -32,26 +31,6 @@ const fetchIncomeList = async () => {
   }
 }
 
-// const currentMonth = ref<string>(dayjs().format('YYYY-MM'))
-// const selectedMonth = ref<string>(currentMonth.value)
-// const filteredIncomeList = computed(() => {
-//   return incomeList.value.filter(
-//     (item) => dayjs(item.date).format('YYYY-MM') === selectedMonth.value,
-//   )
-// })
-// const filteredExpenseList = computed(() => {
-//   return expenseList.value.filter(
-//     (item) => dayjs(item.date).format('YYYY-MM') === selectedMonth.value,
-//   )
-// })
-
-// const monthIncome = computed(() => {
-//   return filteredIncomeList.value.reduce((sum, item) => item.amount + sum, 0)
-// })
-// const monthExpense = computed(() => {
-//   return filteredExpenseList.value.reduce((sum, item) => item.amount + sum, 0)
-// })
-
 // 產生近六個月的月份陣列
 const lastSixMonths = computed(() => {
   return Array.from({ length: 6 }).map((_, i) => {
@@ -81,42 +60,42 @@ const expenseByMonth = computed(() => {
 const chartOptions = computed(() => ({
   title: { text: '近 6 個月收支分析', left: 'center' },
   tooltip: { trigger: 'axis' },
-  legend: { data: ['收入', '支出'], left: 'left' },
-  xAxis: {
-    type: 'category',
-    data: lastSixMonths.value,
-  },
-  yAxis: {
-    type: 'value',
-  },
+  // legend: { data: ['收入', '支出'], top: 30 },
+  xAxis: { type: 'category', data: lastSixMonths.value },
+  yAxis: { type: 'value', name: '金額' },
   series: [
     {
       name: '收入',
       type: 'line',
+      smooth: true,
       data: incomeByMonth.value,
       lineStyle: { color: '#4CAF50' },
     },
     {
       name: '支出',
       type: 'line',
+      smooth: true,
       data: expenseByMonth.value,
       lineStyle: { color: '#F44336' },
     },
   ],
 }))
 
-// const map = computed(() => [
-//   {
-//     title: '收支',
-//     color: 'bg-blue-400',
-//     amount: monthIncome.value - monthExpense.value,
-//     icon: 'DataLine',
-//     highlight: true,
-//   },
-//   { title: '總收入', color: 'bg-green-400', amount: monthIncome.value, icon: 'Money' },
-//   { title: '總支出', color: 'bg-red-400', amount: monthExpense.value, icon: 'Money' },
-// ])
-
+// 將資料組合成卡片需要的格式
+const monthSummary = computed(() =>
+  lastSixMonths.value.map((month, idx) => {
+    const income = incomeByMonth.value[idx]
+    const expense = expenseByMonth.value[idx]
+    const balance = income - expense
+    return {
+      month,
+      income,
+      expense,
+      balance,
+      balanceColor: balance > 0 ? 'text-green-600' : balance < 0 ? 'text-red-600' : 'text-gray-600',
+    }
+  }),
+)
 onMounted(() => {
   fetchIncomeList()
   fetchExpenseList()
@@ -124,9 +103,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="mb-4">
-    <!-- <el-date-picker v-model="selectedMonth" type="month" format="YYYY-MM" value-format="YYYY-MM" /> -->
-  </header>
+  <el-card class="mb-4">
+    <h2 class="text-xl font-bold mb-4 text-center">近 6 個月收支紀錄</h2>
+    <el-table :data="monthSummary" border stripe style="width: 100%" class="text-lg font-bold">
+      <el-table-column prop="month" label="月份" width="120" />
+      <el-table-column prop="income" label="收入" align="right">
+        <template #default="{ row }">
+          {{ row.income.toLocaleString() }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="expense" label="支出" align="right">
+        <template #default="{ row }">
+          {{ row.expense.toLocaleString() }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="balance" label="結餘" align="right">
+        <template #default="{ row }">
+          <span :class="row.balanceColor">
+            {{ row.balance.toLocaleString() }}
+          </span>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-card>
 
   <el-card>
     <v-chart :option="chartOptions" autoresize style="height: 300px" />
