@@ -1,43 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
+import type { Expense, Category } from '@/types/type'
+import { usePieChart } from '@/composables/usePieChart'
+import { usePagination } from '@/composables/usePagination'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
-import { usePieChart } from '@/composables/usePieChart'
-import { usePagination } from '@/composables/usePagination'
-import type { Expense, Category } from '@/types/type'
 dayjs.locale('zh-tw')
 
 const expenseList = ref<Expense[]>([])
 
-const fetchExpenses = async () => {
-  try {
-    const res = await axios.get('http://localhost:3000/api/expenses')
-    expenseList.value = res.data.result
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-// 月份篩選
-const currentMonth: string = dayjs().format('YYYY-MM')
-const selectedMonth = ref<string>(currentMonth)
-
-const selectedCategory = ref<string | null>(null)
-const filterByCategory = (key: string | null) => {
-  selectedCategory.value = key
-}
-
-const filteredExpenseList = computed(() => {
-  return expenseList.value.filter(
-    (expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value,
-  )
-})
-const tableList = computed(() => {
-  return expenseList.value
-    .filter((expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value)
-    .filter((expense) => !selectedCategory.value || expense.category === selectedCategory.value)
-})
 // 分類清單
 const categories: Category[] = [
   { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
@@ -48,6 +20,20 @@ const categories: Category[] = [
   { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
 ]
 
+// 月份篩選
+const currentMonth: string = dayjs().format('YYYY-MM')
+const selectedMonth = ref<string>(currentMonth)
+const filteredExpenseList = computed(() => {
+  return expenseList.value.filter(
+    (expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value,
+  )
+})
+
+// 月份總花費
+const totalCost = computed(() => {
+  return filteredExpenseList.value.reduce((sum, item) => sum + item.amount, 0)
+})
+
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
 const categorySums = computed(() => {
   return filteredExpenseList.value.reduce(
@@ -57,11 +43,6 @@ const categorySums = computed(() => {
     },
     {} as Record<string, number>,
   )
-})
-
-// 計算總金額
-const totalCost = computed(() => {
-  return filteredExpenseList.value.reduce((sum, item) => sum + item.amount, 0)
 })
 
 // 將 categories 多兩個屬性 amount, percentage
@@ -79,14 +60,32 @@ const categoryMap = computed(() => {
     .sort((a, b) => b.amount - a.amount)
 })
 
+// 表格分類篩選
+const categoryButtons = [{ key: null, title: '全部' }, ...categories]
+const selectedCategory = ref<string | null>(null)
+const filterByCategory = (key: string | null) => {
+  selectedCategory.value = key
+}
+const tableList = computed(() => {
+  return expenseList.value
+    .filter((expense) => dayjs(expense.date).format('YYYY-MM') === selectedMonth.value)
+    .filter((expense) => !selectedCategory.value || expense.category === selectedCategory.value)
+})
+
 // 圓餅圖
 const { pieOption } = usePieChart(categories, categorySums)
 
 // 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tableList)
 
-const categoryButtons = [{ key: null, title: '全部' }, ...categories]
-
+const fetchExpenses = async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/api/expenses')
+    expenseList.value = res.data.result
+  } catch (error) {
+    console.log(error)
+  }
+}
 onMounted(() => {
   fetchExpenses()
 })
@@ -146,12 +145,13 @@ onMounted(() => {
       <!-- 分類按鈕 -->
       <header class="flex mb-4">
         <el-button
-          v-for="category in categoryButtons"
-          :key="category.key"
-          @click="filterByCategory(category.key)"
+          v-for="button in categoryButtons"
+          :key="button.key"
+          @click="filterByCategory(button.key)"
           class="flex-1 text-white"
+          :class="{ '!bg-green-700': selectedCategory === button.key }"
         >
-          {{ category.title }}
+          {{ button.title }}
         </el-button>
       </header>
 
