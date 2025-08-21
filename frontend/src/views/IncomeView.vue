@@ -5,10 +5,10 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
-import type { Income, Category } from '@/types/type'
+import type { Transaction, Category } from '@/types/type'
 dayjs.locale('zh-tw')
 
-const incomeList = ref<Income[]>([])
+const incomeList = ref<Transaction[]>([])
 
 const fetchIncomes = async () => {
   try {

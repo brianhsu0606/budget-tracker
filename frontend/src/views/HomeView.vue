@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import type { Transaction } from '@/types/type'
 import dayjs from 'dayjs'
 import axios from 'axios'
 
-interface Data {
-  id: string
-  date: string
-  name: string
-  category: string
-  amount: number
-}
-
-const expenseList = ref<Data[]>([])
-const incomeList = ref<Data[]>([])
+const expenseList = ref<Transaction[]>([])
+const incomeList = ref<Transaction[]>([])
 
 const fetchExpenseList = async () => {
   try {

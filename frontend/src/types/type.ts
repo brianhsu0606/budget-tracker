@@ -1,11 +1,4 @@
-export interface Expense {
-  date: string
-  name: string
-  category: string
-  amount: number
-}
-
-export interface Income {
+export interface Transaction {
   date: string
   name: string
   category: string

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import type { Expense, Category } from '@/types/type'
+import type { Transaction, Category } from '@/types/type'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import axios from 'axios'
@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
 
-const expenseList = ref<Expense[]>([])
+const expenseList = ref<Transaction[]>([])
 
 // 分類清單
 const categories: Category[] = [
