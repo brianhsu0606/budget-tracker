@@ -157,7 +157,7 @@ onMounted(() => {
 
       <!-- 表格 table -->
       <el-card class="mb-4">
-        <el-table :data="pagedList" border>
+        <el-table :data="pagedList" border class="2xl:text-lg font-medium">
           <el-table-column prop="date" label="日期" min-width="120">
             <template #default="{ row }">
               {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
