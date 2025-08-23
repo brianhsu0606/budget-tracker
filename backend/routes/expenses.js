@@ -1,10 +1,10 @@
 import { Router } from "express";
-import expenseList from "../data/defaultExpense.js";
+import Expense from "../models/expenseModel.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    // const expenseList = await Expense.find();
+    const expenseList = await Expense.find();
 
     res.json({
       code: 200,

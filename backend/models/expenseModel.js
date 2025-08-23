@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import toJSON from "../utils/toJSON";
+import toJSON from "../utils/toJSON.js";
 
 const expenseSchema = new mongoose.Schema({
   date: { type: Date, required: true },
