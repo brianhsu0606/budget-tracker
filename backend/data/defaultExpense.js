@@ -1,4 +1,7 @@
 const expenseList = [
+  { date: "2025-08-24", name: "麻古茶坊", category: "food", amount: 90 },
+  { date: "2025-08-24", name: "咖啡廳 - kafeD", category: "food", amount: 160 },
+  { date: "2025-08-24", name: "午餐 - 湖畔拾光", category: "food", amount: 370 },
   { date: "2025-08-21", name: "吉伊卡哇 - 萬聖節再販", category: "entertainment", amount: 4530 },
   { date: "2025-08-20", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
   { date: "2025-08-20", name: "晚餐 - 加分火鍋", category: "food", amount: 371 },

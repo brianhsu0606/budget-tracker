@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import type { Transaction, Category } from '@/types/type'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
+
+const dialog = reactive({
+  isVisible: false,
+  isEdit: false,
+  form: {
+    date: dayjs().format('YYYY-MM-DD'),
+    name: '',
+    category: '',
+    amount: 0,
+  },
+})
 
 const expenseList = ref<Transaction[]>([])
 
@@ -86,6 +97,25 @@ const fetchExpenses = async () => {
     console.log(error)
   }
 }
+
+// const addExpense = async () => {
+//   try {
+//     await axios.post()
+//   } catch (error) {
+
+//   }
+// }
+
+// const submit = async () => {
+//   try {
+//     if (dialog.isEdit) {
+//     } else {
+//       Object.assign(dialog.form)
+//     }
+//     dialog.isVisible = false
+//   } catch (error) {}
+// }
+
 onMounted(() => {
   fetchExpenses()
 })
@@ -94,7 +124,7 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <header class="flex justify-between mb-4">
-    <el-button type="primary">新增支出</el-button>
+    <el-button @click="dialog.isVisible = true" type="primary">新增支出</el-button>
     <h3 class="text-xl font-semibold">支出分析</h3>
     <el-date-picker
       v-model="selectedMonth"
@@ -197,6 +227,30 @@ onMounted(() => {
         :total="tableList.length"
         @current-change="handlePageChange"
       />
+
+      <!-- 表單 -->
+      <el-dialog v-model="dialog.isVisible">
+        <el-form>
+          <el-form-item label="日期">
+            <el-date-picker v-model="dialog.form.date" />
+          </el-form-item>
+          <el-form-item label="名稱">
+            <el-input v-model="dialog.form.name" />
+          </el-form-item>
+          <el-form-item label="分類">
+            <el-select v-model="dialog.form.category">
+              <el-option></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="金額">
+            <el-input-number v-model="dialog.form.amount" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button @click="submit">確認</el-button>
+          <el-button @click="dialog.isVisible = false">取消</el-button>
+        </template>
+      </el-dialog>
     </el-col>
   </el-row>
 </template>

@@ -14,4 +14,16 @@ router.get("/", async (req, res) => {
   } catch (error) {}
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const newExpense = await Expense.create(req.body);
+
+    res.json({
+      code: 200,
+      message: "新增支出成功",
+      result: newExpense,
+    });
+  } catch (error) {}
+});
+
 export default router;
