@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
       message: "獲取支出成功",
       result: expenseList,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error("獲取支出失敗:", error.message);
+  }
 });
 
 router.post("/", async (req, res) => {

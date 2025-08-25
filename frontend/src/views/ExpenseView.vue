@@ -11,7 +11,7 @@ dayjs.locale('zh-tw')
 const defaultForm: Transaction = {
   date: dayjs().format('YYYY-MM-DD'),
   name: '',
-  category: '',
+  category: 'food',
   amount: 0,
 }
 
@@ -91,6 +91,7 @@ const { pieOption } = usePieChart(categories, categorySums)
 // 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tableList)
 
+// CRUD
 const fetchExpenses = async () => {
   try {
     const res = await axios.get('http://localhost:3000/api/expenses')
@@ -116,8 +117,8 @@ const submit = async () => {
   try {
     if (dialog.isEdit) {
     } else {
-      const newExpense = await axios.post('http://localhost:3000/api/expenses', dialog.form)
-      expenseList.value.unshift(newExpense)
+      const res = await axios.post('http://localhost:3000/api/expenses', dialog.form)
+      expenseList.value.unshift(res.data.result)
     }
     dialog.isVisible = false
   } catch (error) {
@@ -239,7 +240,7 @@ onMounted(() => {
         @current-change="handlePageChange"
       />
 
-      <!-- 表單 -->
+      <!-- 表單 dialog-->
       <el-dialog v-model="dialog.isVisible">
         <el-form>
           <el-form-item label="日期">
@@ -250,7 +251,12 @@ onMounted(() => {
           </el-form-item>
           <el-form-item label="分類">
             <el-select v-model="dialog.form.category">
-              <el-option></el-option>
+              <el-option
+                v-for="category in categories"
+                :key="category.key"
+                :value="category.key"
+                :label="category.title"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="金額">
