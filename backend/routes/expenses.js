@@ -30,4 +30,16 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    await Expense.findByIdAndDelete(req.params.id);
+
+    res.json({
+      code: 200,
+      message: "刪除支出成功",
+      result: null,
+    });
+  } catch (error) {}
+});
+
 export default router;

@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
 
-const defaultForm: Transaction = {
+const defaultForm = {
   date: dayjs().format('YYYY-MM-DD'),
   name: '',
   category: 'food',
@@ -126,6 +126,15 @@ const submit = async () => {
   }
 }
 
+const handleDelete = async (id: string) => {
+  try {
+    await axios.delete(`http://localhost:3000/api/expenses/${id}`)
+    expenseList.value = expenseList.value.filter((expense) => expense.id !== id)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 onMounted(() => {
   fetchExpenses()
 })
@@ -224,7 +233,7 @@ onMounted(() => {
           <el-table-column label="操作" min-width="130">
             <template #default="{ row }">
               <el-button @click="handleEdit(row)" type="primary">編輯</el-button>
-              <el-button type="danger">刪除</el-button>
+              <el-button @click="handleDelete(row.id)" type="danger">刪除</el-button>
             </template>
           </el-table-column>
         </el-table>
