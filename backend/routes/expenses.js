@@ -23,7 +23,9 @@ router.post("/", async (req, res) => {
       message: "新增支出成功",
       result: newExpense,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error("新增支出失敗:", error.message);
+  }
 });
 
 export default router;

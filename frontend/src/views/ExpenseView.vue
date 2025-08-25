@@ -8,15 +8,17 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
 
+const defaultForm: Transaction = {
+  date: dayjs().format('YYYY-MM-DD'),
+  name: '',
+  category: '',
+  amount: 0,
+}
+
 const dialog = reactive({
   isVisible: false,
   isEdit: false,
-  form: {
-    date: dayjs().format('YYYY-MM-DD'),
-    name: '',
-    category: '',
-    amount: 0,
-  },
+  form: { ...defaultForm },
 })
 
 const expenseList = ref<Transaction[]>([])
@@ -98,23 +100,30 @@ const fetchExpenses = async () => {
   }
 }
 
-// const addExpense = async () => {
-//   try {
-//     await axios.post()
-//   } catch (error) {
+const handleAdd = () => {
+  dialog.isVisible = true
+  dialog.isEdit = false
+  Object.assign(dialog.form, defaultForm)
+}
 
-//   }
-// }
+const handleEdit = (row: Transaction) => {
+  dialog.isVisible = true
+  dialog.isEdit = true
+  Object.assign(dialog.form, row)
+}
 
-// const submit = async () => {
-//   try {
-//     if (dialog.isEdit) {
-//     } else {
-//       Object.assign(dialog.form)
-//     }
-//     dialog.isVisible = false
-//   } catch (error) {}
-// }
+const submit = async () => {
+  try {
+    if (dialog.isEdit) {
+    } else {
+      const newExpense = await axios.post('http://localhost:3000/api/expenses', dialog.form)
+      expenseList.value.unshift(newExpense)
+    }
+    dialog.isVisible = false
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 onMounted(() => {
   fetchExpenses()
@@ -124,7 +133,7 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <header class="flex justify-between mb-4">
-    <el-button @click="dialog.isVisible = true" type="primary">新增支出</el-button>
+    <el-button @click="handleAdd" type="primary">新增支出</el-button>
     <h3 class="text-xl font-semibold">支出分析</h3>
     <el-date-picker
       v-model="selectedMonth"
@@ -212,8 +221,10 @@ onMounted(() => {
             </template>
           </el-table-column>
           <el-table-column label="操作" min-width="130">
-            <el-button type="primary">編輯</el-button>
-            <el-button type="danger">刪除</el-button>
+            <template #default="{ row }">
+              <el-button @click="handleEdit(row)" type="primary">編輯</el-button>
+              <el-button type="danger">刪除</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </el-card>
