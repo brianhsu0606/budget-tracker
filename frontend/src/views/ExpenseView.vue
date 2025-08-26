@@ -3,11 +3,11 @@ import type { Transaction, TransactionForm, Category } from '@/types/type'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
-import axios from 'axios'
+import expenseApi from '@/apis/expense'
+
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
-import expenseApi from '@/apis/expense'
 
 const defaultForm: TransactionForm = {
   date: dayjs().format('YYYY-MM-DD'),
@@ -128,7 +128,7 @@ const submit = async () => {
 
 const handleDelete = async (id: string) => {
   try {
-    await axios.delete(`http://localhost:3000/api/expenses/${id}`)
+    await expenseApi.deleteExpense(id)
     expenseList.value = expenseList.value.filter((expense) => expense.id !== id)
   } catch (error) {
     console.error(error)
