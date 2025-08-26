@@ -7,6 +7,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
+import expenseApi from '@/apis/expense'
 
 const defaultForm = {
   date: dayjs().format('YYYY-MM-DD'),
@@ -94,8 +95,7 @@ const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tab
 // CRUD
 const fetchExpenses = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/expenses')
-    expenseList.value = res.data.result
+    expenseList.value = await expenseApi.getExpenseList()
   } catch (error) {
     console.log(error)
   }
@@ -117,7 +117,7 @@ const submit = async () => {
   try {
     if (dialog.isEdit) {
     } else {
-      const res = await axios.post('http://localhost:3000/api/expenses', dialog.form)
+      const res = await expenseApi.addExpense(dialog.form)
       expenseList.value.unshift(res.data.result)
     }
     dialog.isVisible = false
