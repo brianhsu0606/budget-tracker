@@ -1,5 +1,5 @@
 import request from '@/apis/request'
-import type { Transaction, TransactionForm } from '@/types/type'
+import type { Transaction } from '@/types/type'
 
 export default {
   getExpenseList(): Promise<Transaction[]> {
@@ -8,10 +8,17 @@ export default {
       method: 'get',
     })
   },
-  addExpense(data: TransactionForm): Promise<Transaction> {
+  addExpense(data: Transaction): Promise<Transaction> {
     return request({
       url: '/expenses',
       method: 'post',
+      data,
+    })
+  },
+  updateExpense(id: string, data: Transaction): Promise<Transaction> {
+    return request({
+      url: `/expenses/${id}`,
+      method: 'put',
       data,
     })
   },

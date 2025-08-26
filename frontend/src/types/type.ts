@@ -1,17 +1,18 @@
 export interface Transaction {
-  id: string
+  id: string | null
   date: string
   name: string
   category: string
   amount: number
 }
 
-export interface TransactionForm {
-  date: string
-  name: string
-  category: string
-  amount: number
-}
+// export interface TransactionForm {
+//   id: string
+//   date: string
+//   name: string
+//   category: string
+//   amount: number
+// }
 
 export interface Category {
   key: string

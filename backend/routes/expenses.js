@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
       result: expenseList,
     });
   } catch (error) {
-    console.error("獲取支出失敗:", error.message);
+    console.error("獲取支出失敗", error.message);
   }
 });
 
@@ -26,7 +26,21 @@ router.post("/", async (req, res) => {
       result: newExpense,
     });
   } catch (error) {
-    console.error("新增支出失敗:", error.message);
+    console.error("新增支出失敗", error.message);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedExpense = await Expense.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    res.json({
+      code: 200,
+      message: "新增支出成功",
+      result: updatedExpense,
+    });
+  } catch (error) {
+    console.error("編輯支出失敗", error.message);
   }
 });
 
@@ -39,7 +53,9 @@ router.delete("/:id", async (req, res) => {
       message: "刪除支出成功",
       result: null,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error("刪除支出失敗", error.message);
+  }
 });
 
 export default router;

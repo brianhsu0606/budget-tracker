@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Transaction, TransactionForm, Category } from '@/types/type'
+import type { Transaction, Category } from '@/types/type'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
@@ -9,7 +9,8 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
 
-const defaultForm: TransactionForm = {
+const defaultForm: Transaction = {
+  id: null,
   date: dayjs().format('YYYY-MM-DD'),
   name: '',
   category: 'food',
@@ -115,7 +116,10 @@ const handleEdit = (row: Transaction) => {
 
 const submit = async () => {
   try {
-    if (dialog.isEdit) {
+    if (dialog.isEdit && dialog.form.id) {
+      const updatedExpense = await expenseApi.updateExpense(dialog.form.id, dialog.form)
+      const index = expenseList.value.findIndex((expense) => expense.id === updatedExpense.id)
+      expenseList.value[index] = updatedExpense
     } else {
       const newExpense = await expenseApi.addExpense(dialog.form)
       expenseList.value.unshift(newExpense)
