@@ -1,8 +1,9 @@
 import type { Transaction, Dialog } from '@/types/type'
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ref, type Ref } from 'vue'
+import { ElMessage, type FormInstance } from 'element-plus'
 
 export const useCrud = (
+  formRef: Ref<FormInstance | undefined>,
   dialog: Dialog,
   defaultForm: Transaction,
   getApi: () => Promise<Transaction[]>,
@@ -28,17 +29,20 @@ export const useCrud = (
     dialog.isVisible = true
     dialog.isEdit = false
     Object.assign(dialog.form, defaultForm)
+    formRef.value?.clearValidate()
   }
 
   const handleEdit = (row: Transaction) => {
     dialog.isVisible = true
     dialog.isEdit = true
     Object.assign(dialog.form, row)
+    formRef.value?.clearValidate()
   }
 
   const submit = async () => {
     isLoading.value = true
     try {
+      await formRef.value?.validate()
       if (dialog.isEdit && dialog.form.id) {
         const updatedItem = await updateApi(dialog.form.id, dialog.form)
         const index = list.value.findIndex((item) => item.id === updatedItem.id)

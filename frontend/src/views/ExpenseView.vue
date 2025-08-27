@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Transaction, Dialog, Category } from '@/types/type'
+import type { FormInstance } from 'element-plus'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
@@ -24,6 +25,15 @@ const dialog = reactive<Dialog>({
   form: { ...defaultForm },
 })
 
+// 表單驗證
+const formRef = ref<FormInstance>()
+const rules = {
+  date: [{ required: true, message: '請選擇日期', trigger: 'blur' }],
+  name: [{ required: true, message: '請輸入名稱', trigger: 'blur' }],
+  category: [{ required: true, message: '請選擇分類', trigger: 'blur' }],
+  amount: [{ required: true, message: '請輸入金額', trigger: 'blur' }],
+}
+
 // CRUD
 const {
   list: expenseList,
@@ -34,6 +44,7 @@ const {
   handleDelete,
   submit,
 } = useCrud(
+  formRef,
   dialog,
   defaultForm,
   expenseApi.getExpenseList,
@@ -231,14 +242,14 @@ onMounted(() => {
 
   <!-- 表單 dialog-->
   <el-dialog v-model="dialog.isVisible">
-    <el-form>
-      <el-form-item label="日期">
+    <el-form ref="formRef" :model="dialog.form" :rules="rules">
+      <el-form-item prop="date" label="日期">
         <el-date-picker v-model="dialog.form.date" />
       </el-form-item>
-      <el-form-item label="名稱">
+      <el-form-item prop="name" label="名稱">
         <el-input v-model="dialog.form.name" />
       </el-form-item>
-      <el-form-item label="分類">
+      <el-form-item prop="category" label="分類">
         <el-select v-model="dialog.form.category">
           <el-option
             v-for="category in categories"
@@ -248,7 +259,7 @@ onMounted(() => {
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="金額">
+      <el-form-item prop="amount" label="金額">
         <el-input-number v-model="dialog.form.amount" />
       </el-form-item>
     </el-form>
