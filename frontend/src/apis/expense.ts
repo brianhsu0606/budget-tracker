@@ -22,7 +22,7 @@ const expenseApi = {
       data,
     })
   },
-  deleteExpense(id: string) {
+  deleteExpense(id: string): Promise<void> {
     return request({
       url: `/expenses/${id}`,
       method: 'delete',

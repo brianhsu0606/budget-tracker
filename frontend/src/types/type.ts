@@ -6,6 +6,12 @@ export interface Transaction {
   amount: number
 }
 
+export interface Dialog {
+  isVisible: boolean
+  isEdit: boolean
+  form: Transaction
+}
+
 export interface Category {
   key: string
   title: string

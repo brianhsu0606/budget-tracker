@@ -1,12 +1,27 @@
 <script setup lang="ts">
 import type { Transaction, Category } from '@/types/type'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import axios from 'axios'
+
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
+
+const defaultForm: Transaction = {
+  id: null,
+  date: dayjs().format('YYYY-MM-DD'),
+  name: '',
+  category: 'salary',
+  amount: 0,
+}
+
+const dialog = reactive({
+  isVisible: false,
+  isEdit: false,
+  form: { ...defaultForm },
+})
 
 const incomeList = ref<Transaction[]>([])
 
@@ -72,6 +87,18 @@ const { pieOption } = usePieChart(categories, categorySums)
 // 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(filteredIncomeList)
 
+const handleAdd = () => {
+  dialog.isVisible = true
+  dialog.isEdit = false
+  Object.assign(dialog.form, defaultForm)
+}
+
+const handleEdit = (row: Transaction) => {
+  dialog.isVisible = true
+  dialog.isEdit = true
+  Object.assign(dialog.form, row)
+}
+
 onMounted(() => {
   fetchIncomes()
 })
@@ -80,8 +107,8 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <header class="flex justify-between mb-4">
-    <el-button type="primary">新增支出</el-button>
-    <h3 class="text-xl font-semibold">支出分析</h3>
+    <el-button @click="handleAdd" type="primary">新增收入</el-button>
+    <h3 class="text-xl font-semibold">收入分析</h3>
     <el-date-picker
       v-model="selectedMonth"
       type="month"
@@ -154,11 +181,14 @@ onMounted(() => {
             </template>
           </el-table-column>
           <el-table-column label="操作" min-width="130">
-            <el-button type="primary">編輯</el-button>
-            <el-button type="danger">刪除</el-button>
+            <template #default="{ row }">
+              <el-button @click="handleEdit(row)" type="primary">編輯</el-button>
+              <el-button type="danger">刪除</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </el-card>
+
       <!-- 分頁功能 pagination -->
       <el-pagination
         background
@@ -170,6 +200,35 @@ onMounted(() => {
       />
     </el-col>
   </el-row>
+
+  <!-- 表單 dialog-->
+  <el-dialog v-model="dialog.isVisible">
+    <el-form>
+      <el-form-item label="日期">
+        <el-date-picker v-model="dialog.form.date" />
+      </el-form-item>
+      <el-form-item label="名稱">
+        <el-input v-model="dialog.form.name" />
+      </el-form-item>
+      <el-form-item label="分類">
+        <el-select v-model="dialog.form.category">
+          <el-option
+            v-for="category in categories"
+            :key="category.key"
+            :value="category.key"
+            :label="category.title"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="金額">
+        <el-input-number v-model="dialog.form.amount" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="submit">確認</el-button>
+      <el-button @click="dialog.isVisible = false">取消</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss"></style>

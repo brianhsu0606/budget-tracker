@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Transaction, Category } from '@/types/type'
+import type { Transaction, Dialog, Category } from '@/types/type'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
+import { useCrud } from '@/composables/useCrud'
 import expenseApi from '@/apis/expense'
 
 import dayjs from 'dayjs'
@@ -17,13 +18,28 @@ const defaultForm: Transaction = {
   amount: 0,
 }
 
-const dialog = reactive({
+const dialog = reactive<Dialog>({
   isVisible: false,
   isEdit: false,
   form: { ...defaultForm },
 })
 
-const expenseList = ref<Transaction[]>([])
+// CRUD
+const {
+  list: expenseList,
+  fetchList,
+  handleAdd,
+  handleEdit,
+  handleDelete,
+  submit,
+} = useCrud(
+  dialog,
+  defaultForm,
+  expenseApi.getExpenseList,
+  expenseApi.addExpense,
+  expenseApi.updateExpense,
+  expenseApi.deleteExpense,
+)
 
 // 分類清單
 const categories: Category[] = [
@@ -93,54 +109,8 @@ const { pieOption } = usePieChart(categories, categorySums)
 // 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tableList)
 
-// CRUD
-const fetchExpenses = async () => {
-  try {
-    expenseList.value = await expenseApi.getExpenseList()
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const handleAdd = () => {
-  dialog.isVisible = true
-  dialog.isEdit = false
-  Object.assign(dialog.form, defaultForm)
-}
-
-const handleEdit = (row: Transaction) => {
-  dialog.isVisible = true
-  dialog.isEdit = true
-  Object.assign(dialog.form, row)
-}
-
-const submit = async () => {
-  try {
-    if (dialog.isEdit && dialog.form.id) {
-      const updatedExpense = await expenseApi.updateExpense(dialog.form.id, dialog.form)
-      const index = expenseList.value.findIndex((expense) => expense.id === updatedExpense.id)
-      expenseList.value[index] = updatedExpense
-    } else {
-      const newExpense = await expenseApi.addExpense(dialog.form)
-      expenseList.value.unshift(newExpense)
-    }
-    dialog.isVisible = false
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-const handleDelete = async (id: string) => {
-  try {
-    await expenseApi.deleteExpense(id)
-    expenseList.value = expenseList.value.filter((expense) => expense.id !== id)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 onMounted(() => {
-  fetchExpenses()
+  fetchList()
 })
 </script>
 
