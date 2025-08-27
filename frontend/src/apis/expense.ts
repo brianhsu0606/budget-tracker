@@ -1,7 +1,7 @@
-import request from '@/apis/request'
 import type { Transaction } from '@/types/type'
+import request from '@/apis/request'
 
-export default {
+const expenseApi = {
   getExpenseList(): Promise<Transaction[]> {
     return request({
       url: '/expenses',
@@ -29,3 +29,5 @@ export default {
     })
   },
 }
+
+export default expenseApi

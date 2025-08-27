@@ -1,7 +1,7 @@
-import request from './request'
 import type { Transaction } from '@/types/type'
+import request from './request'
 
-export default {
+const incomeApi = {
   getIncomeList() {
     return request({
       url: '/incomes',
@@ -29,3 +29,5 @@ export default {
     })
   },
 }
+
+export default incomeApi
