@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Transaction, Category } from '@/types/type'
+import type { Transaction, Dialog, Category } from '@/types/type'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
-import axios from 'axios'
-
+import { useCrud } from '@/composables/useCrud'
+import incomeApi from '@/apis/income'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 dayjs.locale('zh-tw')
@@ -17,22 +17,28 @@ const defaultForm: Transaction = {
   amount: 0,
 }
 
-const dialog = reactive({
+const dialog = reactive<Dialog>({
   isVisible: false,
   isEdit: false,
   form: { ...defaultForm },
 })
 
-const incomeList = ref<Transaction[]>([])
-
-const fetchIncomes = async () => {
-  try {
-    const res = await axios.get('http://localhost:3000/api/incomes')
-    incomeList.value = res.data.result
-  } catch (error) {
-    console.log(error)
-  }
-}
+// CRUD
+const {
+  list: incomeList,
+  fetchList,
+  handleAdd,
+  handleEdit,
+  handleDelete,
+  submit,
+} = useCrud(
+  dialog,
+  defaultForm,
+  incomeApi.getIncomeList,
+  incomeApi.addIncome,
+  incomeApi.updateIncome,
+  incomeApi.deleteIncome,
+)
 
 // 月份篩選
 const currentMonth: string = dayjs().format('YYYY-MM')
@@ -87,20 +93,8 @@ const { pieOption } = usePieChart(categories, categorySums)
 // 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(filteredIncomeList)
 
-const handleAdd = () => {
-  dialog.isVisible = true
-  dialog.isEdit = false
-  Object.assign(dialog.form, defaultForm)
-}
-
-const handleEdit = (row: Transaction) => {
-  dialog.isVisible = true
-  dialog.isEdit = true
-  Object.assign(dialog.form, row)
-}
-
 onMounted(() => {
-  fetchIncomes()
+  fetchList()
 })
 </script>
 
@@ -183,7 +177,7 @@ onMounted(() => {
           <el-table-column label="操作" min-width="130">
             <template #default="{ row }">
               <el-button @click="handleEdit(row)" type="primary">編輯</el-button>
-              <el-button type="danger">刪除</el-button>
+              <el-button @click="handleDelete(row.id)" type="danger">刪除</el-button>
             </template>
           </el-table-column>
         </el-table>

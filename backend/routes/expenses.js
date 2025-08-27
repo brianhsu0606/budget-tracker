@@ -36,7 +36,7 @@ router.put("/:id", async (req, res) => {
 
     res.json({
       code: 200,
-      message: "新增支出成功",
+      message: "編輯支出成功",
       result: updatedExpense,
     });
   } catch (error) {

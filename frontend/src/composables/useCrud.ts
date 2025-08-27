@@ -49,6 +49,8 @@ export const useCrud = (
 
   const handleDelete = async (id: string) => {
     try {
+      console.log(id)
+
       await deleteApi(id)
       list.value = list.value.filter((expense) => expense.id !== id)
     } catch (error) {
