@@ -5,6 +5,7 @@ import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import { useCrud } from '@/composables/useCrud'
+import CategoryTable from '@/components/CategoryTable.vue'
 import incomeApi from '@/apis/income'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
@@ -141,24 +142,7 @@ onMounted(() => {
       </el-card>
 
       <!-- 各分類 總金額、比例 -->
-      <el-card>
-        <el-table :data="categoryMap" border class="text-lg font-bold">
-          <el-table-column prop="title" label="分類">
-            <template #default="{ row }">
-              <div class="flex items-center gap-4">
-                <component :is="row.icon" class="p-1 w-10 rounded-lg" :class="row.color" />
-                <h3>{{ row.title }}</h3>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="amount" label="金額" align="right" header-align="left">
-            <template #default="{ row }">{{ row.amount.toLocaleString() }} </template>
-          </el-table-column>
-          <el-table-column prop="percentage" label="比例" align="right" header-align="left">
-            <template #default="{ row }"> {{ row.percentage.toLocaleString() }} % </template>
-          </el-table-column>
-        </el-table>
-      </el-card>
+      <CategoryTable :data="categoryMap" />
     </el-col>
 
     <!-- 右邊 表格 -->
