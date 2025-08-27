@@ -10,12 +10,16 @@ export const useCrud = (
   deleteApi: (id: string) => Promise<void>,
 ) => {
   const list = ref<Transaction[]>([])
+  const isLoading = ref<boolean>(false)
 
   const fetchList = async () => {
+    isLoading.value = true
     try {
       list.value = await getApi()
     } catch (error) {
       console.log(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -32,6 +36,7 @@ export const useCrud = (
   }
 
   const submit = async () => {
+    isLoading.value = true
     try {
       if (dialog.isEdit && dialog.form.id) {
         const updatedItem = await updateApi(dialog.form.id, dialog.form)
@@ -44,19 +49,22 @@ export const useCrud = (
       dialog.isVisible = false
     } catch (error) {
       console.error(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
   const handleDelete = async (id: string) => {
+    isLoading.value = true
     try {
-      console.log(id)
-
       await deleteApi(id)
       list.value = list.value.filter((expense) => expense.id !== id)
     } catch (error) {
       console.error(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
-  return { list, fetchList, handleAdd, handleEdit, handleDelete, submit }
+  return { list, isLoading, fetchList, handleAdd, handleEdit, handleDelete, submit }
 }

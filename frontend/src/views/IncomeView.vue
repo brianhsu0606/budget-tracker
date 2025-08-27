@@ -26,6 +26,7 @@ const dialog = reactive<Dialog>({
 // CRUD
 const {
   list: incomeList,
+  isLoading,
   fetchList,
   handleAdd,
   handleEdit,
@@ -113,7 +114,7 @@ onMounted(() => {
   </header>
 
   <!-- 圓餅圖 -->
-  <el-row :gutter="20">
+  <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <!-- 左邊 圓餅圖、各分類金額 -->
     <el-col :span="10">
       <!-- 圓餅圖 -->

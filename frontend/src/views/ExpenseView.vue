@@ -27,6 +27,7 @@ const dialog = reactive<Dialog>({
 // CRUD
 const {
   list: expenseList,
+  isLoading,
   fetchList,
   handleAdd,
   handleEdit,
@@ -129,7 +130,7 @@ onMounted(() => {
   </header>
 
   <!-- 內容區，分左右 -->
-  <el-row :gutter="20">
+  <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <!-- 左邊 圓餅圖、各分類金額 -->
     <el-col :span="10">
       <!-- 圓餅圖 -->
@@ -222,37 +223,37 @@ onMounted(() => {
         :total="tableList.length"
         @current-change="handlePageChange"
       />
-
-      <!-- 表單 dialog-->
-      <el-dialog v-model="dialog.isVisible">
-        <el-form>
-          <el-form-item label="日期">
-            <el-date-picker v-model="dialog.form.date" />
-          </el-form-item>
-          <el-form-item label="名稱">
-            <el-input v-model="dialog.form.name" />
-          </el-form-item>
-          <el-form-item label="分類">
-            <el-select v-model="dialog.form.category">
-              <el-option
-                v-for="category in categories"
-                :key="category.key"
-                :value="category.key"
-                :label="category.title"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="金額">
-            <el-input-number v-model="dialog.form.amount" />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <el-button @click="submit">確認</el-button>
-          <el-button @click="dialog.isVisible = false">取消</el-button>
-        </template>
-      </el-dialog>
     </el-col>
   </el-row>
+
+  <!-- 表單 dialog-->
+  <el-dialog v-model="dialog.isVisible">
+    <el-form>
+      <el-form-item label="日期">
+        <el-date-picker v-model="dialog.form.date" />
+      </el-form-item>
+      <el-form-item label="名稱">
+        <el-input v-model="dialog.form.name" />
+      </el-form-item>
+      <el-form-item label="分類">
+        <el-select v-model="dialog.form.category">
+          <el-option
+            v-for="category in categories"
+            :key="category.key"
+            :value="category.key"
+            :label="category.title"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="金額">
+        <el-input-number v-model="dialog.form.amount" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="submit">確認</el-button>
+      <el-button @click="dialog.isVisible = false">取消</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss"></style>
