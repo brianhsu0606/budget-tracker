@@ -156,25 +156,24 @@ onMounted(() => {
         <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
       </el-card>
 
-      <!-- 各分類金額 -->
+      <!-- 各分類 總金額、比例 -->
       <el-card>
-        <header class="flex items-center text-lg font-bold p-2">
-          <h3 class="w-[40%]">分類</h3>
-          <p class="w-[30%]">金額</p>
-          <p class="w-[30%]">比例</p>
-        </header>
-        <div
-          v-for="data in categoryMap"
-          :key="data.title"
-          class="flex items-center border-t p-2 text-lg font-medium hover:bg-gray-200 transition"
-        >
-          <div class="flex items-center gap-4 w-[40%]">
-            <component :is="data.icon" class="p-1 w-10 rounded-lg" :class="data.color"></component>
-            <h3>{{ data.title }}</h3>
-          </div>
-          <p class="w-[30%]">{{ data.amount.toLocaleString() }}</p>
-          <p class="w-[30%]">{{ data.percentage }} %</p>
-        </div>
+        <el-table :data="categoryMap" border class="text-lg font-bold">
+          <el-table-column prop="title" label="分類">
+            <template #default="{ row }">
+              <div class="flex items-center gap-4">
+                <component :is="row.icon" class="p-1 w-10 rounded-lg" :class="row.color" />
+                <h3>{{ row.title }}</h3>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="amount" label="金額" align="right" header-align="left">
+            <template #default="{ row }">{{ row.amount.toLocaleString() }} </template>
+          </el-table-column>
+          <el-table-column prop="percentage" label="比例" align="right" header-align="left">
+            <template #default="{ row }"> {{ row.percentage.toLocaleString() }} % </template>
+          </el-table-column>
+        </el-table>
       </el-card>
     </el-col>
 
