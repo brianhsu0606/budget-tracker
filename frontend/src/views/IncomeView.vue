@@ -101,17 +101,20 @@ onMounted(() => {
 
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
-  <header class="flex justify-between mb-4">
-    <el-button @click="handleAdd" type="primary">新增收入</el-button>
-    <h3 class="text-xl font-semibold">收入分析</h3>
-    <el-date-picker
-      v-model="selectedMonth"
-      type="month"
-      format="YYYY-MM"
-      value-format="YYYY-MM"
-      :clearable="false"
-    />
-  </header>
+  <el-card class="mb-4">
+    <header class="flex justify-between items-center">
+      <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4">新增收入</el-button>
+      <h3 class="text-2xl font-semibold">收入分析</h3>
+      <el-date-picker
+        v-model="selectedMonth"
+        type="month"
+        format="YYYY-MM"
+        value-format="YYYY-MM"
+        :clearable="false"
+        class="text-lg"
+      />
+    </header>
+  </el-card>
 
   <!-- 圓餅圖 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">

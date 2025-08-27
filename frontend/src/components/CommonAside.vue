@@ -13,27 +13,25 @@ const pageList = [
 </script>
 
 <template>
-  <el-menu :default-active="activePath" router>
-    <el-menu-item v-for="page in pageList" :key="page.path" :index="page.path">
+  <el-menu :default-active="activePath" router class="bg-blue-100">
+    <el-menu-item
+      v-for="page in pageList"
+      :key="page.path"
+      :index="page.path"
+      class="hover:bg-blue-300"
+    >
       <h3 class="text-lg font-medium">{{ page.label }}</h3>
     </el-menu-item>
   </el-menu>
 </template>
 
 <style scoped lang="scss">
-.el-menu {
-  background-color: #e8f5e9;
+.el-menu-item {
+  color: #333333;
+  border-bottom: 0.5px solid gray;
 
-  .el-menu-item {
-    color: #333333;
-    border-bottom: 0.5px solid gray;
-
-    &:hover {
-      background-color: #dcedc8;
-    }
-    &.is-active {
-      background-color: #79ce7e;
-    }
+  &.is-active {
+    @apply bg-blue-400;
   }
 }
 </style>

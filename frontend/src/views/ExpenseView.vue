@@ -117,17 +117,20 @@ onMounted(() => {
 
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
-  <header class="flex justify-between mb-4">
-    <el-button @click="handleAdd" type="primary">新增支出</el-button>
-    <h3 class="text-xl font-semibold">支出分析</h3>
-    <el-date-picker
-      v-model="selectedMonth"
-      type="month"
-      format="YYYY-MM"
-      value-format="YYYY-MM"
-      :clearable="false"
-    />
-  </header>
+  <el-card class="mb-4">
+    <header class="flex justify-between items-center">
+      <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4">新增支出</el-button>
+      <h3 class="text-2xl font-semibold">支出分析</h3>
+      <el-date-picker
+        v-model="selectedMonth"
+        type="month"
+        format="YYYY-MM"
+        value-format="YYYY-MM"
+        :clearable="false"
+        class="text-lg"
+      />
+    </header>
+  </el-card>
 
   <!-- 內容區，分左右 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
@@ -166,21 +169,21 @@ onMounted(() => {
 
     <!-- 右邊 分類按鈕、表格 -->
     <el-col :span="14">
-      <!-- 分類按鈕 -->
-      <header class="flex mb-4">
-        <el-button
-          v-for="button in categoryButtons"
-          :key="button.key"
-          @click="filterByCategory(button.key)"
-          class="flex-1 text-white"
-          :class="{ '!bg-green-700': selectedCategory === button.key }"
-        >
-          {{ button.title }}
-        </el-button>
-      </header>
-
-      <!-- 表格 table -->
       <el-card class="mb-4">
+        <!-- 分類按鈕 -->
+        <header class="flex mb-4">
+          <el-button
+            v-for="button in categoryButtons"
+            :key="button.key"
+            @click="filterByCategory(button.key)"
+            class="flex-1 text-white"
+            :class="{ '!bg-blue-600': selectedCategory === button.key }"
+          >
+            {{ button.title }}
+          </el-button>
+        </header>
+
+        <!-- 表格 table -->
         <el-table :data="pagedList" border class="2xl:text-lg font-medium">
           <el-table-column prop="date" label="日期" min-width="120">
             <template #default="{ row }">
