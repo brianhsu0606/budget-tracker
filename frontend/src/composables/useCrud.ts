@@ -1,5 +1,6 @@
 import type { Transaction, Dialog } from '@/types/type'
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
 
 export const useCrud = (
   dialog: Dialog,
@@ -47,6 +48,7 @@ export const useCrud = (
         list.value.unshift(newItem)
       }
       dialog.isVisible = false
+      ElMessage.success(dialog.isEdit ? '編輯成功' : '新增成功')
     } catch (error) {
       console.error(error)
     } finally {
@@ -59,6 +61,7 @@ export const useCrud = (
     try {
       await deleteApi(id)
       list.value = list.value.filter((expense) => expense.id !== id)
+      ElMessage.success('刪除成功')
     } catch (error) {
       console.error(error)
     } finally {
