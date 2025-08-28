@@ -2,23 +2,22 @@
 import { computed, onMounted, ref } from 'vue'
 import type { Transaction } from '@/types/type'
 import dayjs from 'dayjs'
-import axios from 'axios'
+import expenseApi from '@/apis/expense'
+import incomeApi from '@/apis/income'
 
 const expenseList = ref<Transaction[]>([])
 const incomeList = ref<Transaction[]>([])
 
 const fetchExpenseList = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/expenses')
-    expenseList.value = res.data.result
+    expenseList.value = await expenseApi.getExpenseList()
   } catch (error) {
     console.log(error)
   }
 }
 const fetchIncomeList = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/incomes')
-    incomeList.value = res.data.result
+    incomeList.value = await incomeApi.getIncomeList()
   } catch (error) {
     console.log(error)
   }

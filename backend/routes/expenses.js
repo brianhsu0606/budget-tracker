@@ -1,10 +1,12 @@
 import { Router } from "express";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 import Expense from "../models/expenseModel.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
-    const expenseList = await Expense.find();
+    const username = req.user.username;
+    const expenseList = await Expense.find({ username });
 
     res.json({
       code: 200,

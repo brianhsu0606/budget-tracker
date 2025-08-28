@@ -1,10 +1,12 @@
 import { Router } from "express";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 import Income from "../models/incomeModel.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
-    const incomeList = await Income.find();
+    const username = req.user.username;
+    const incomeList = await Income.find({ username });
 
     res.json({
       code: 200,
