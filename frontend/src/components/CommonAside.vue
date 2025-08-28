@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+
+const userStore = useUserStore()
 
 const router = useRouter()
 const activePath = computed(() => router.currentRoute.value.path)
@@ -13,6 +16,14 @@ const pageList = [
 </script>
 
 <template>
+  <div class="h-[25vh]">
+    <!-- <img
+      :src="userStore.avatar || '/default-avatar.png'"
+      alt="頭貼"
+      class="w-16 h-16 rounded-full"
+    /> -->
+    <h3 class="text-2xl font-bold">{{ userStore.username }}</h3>
+  </div>
   <el-menu :default-active="activePath" router class="bg-blue-100">
     <el-menu-item
       v-for="page in pageList"

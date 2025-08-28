@@ -12,6 +12,8 @@ const initUser = async () => {
       await User.create({
         username: user.username,
         password: hashedPassword,
+        avatar: "avatar1.jpg",
+        displayName: user.username,
       });
       console.log(`初始化帳號 ${user.username} 完成`);
     }
