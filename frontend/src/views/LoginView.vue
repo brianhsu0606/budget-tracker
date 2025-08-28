@@ -10,8 +10,33 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const isLogin = ref<boolean>(true)
-const changeForm = () => {
-  isLogin.value = !isLogin.value
+const showPassword = ref<boolean>(false)
+
+// 註冊
+const registerFormRef = ref()
+const registerForm = ref<Form>({
+  username: '',
+  password: '',
+})
+const registerRules = {
+  username: [
+    { required: true, message: '請輸入帳號', trigger: 'blur' },
+    { min: 3, max: 20, message: '帳號必須為 3 - 20 個字', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '請輸入密碼', trigger: 'blur' },
+    { min: 5, max: 20, message: '密碼必須為 5 - 20 個字', trigger: 'blur' },
+  ],
+}
+
+const handleRegister = async () => {
+  try {
+    await authApi.register(registerForm.value)
+    ElMessage.success('註冊成功！')
+    isLogin.value = true
+  } catch (error) {
+    console.log('註冊失敗', error)
+  }
 }
 
 // 登入
@@ -39,34 +64,6 @@ const handleLogin = async () => {
     }
   } catch (error) {
     console.log('登入失敗', error)
-  }
-}
-
-// 註冊
-const showPassword = ref<boolean>(false)
-const registerFormRef = ref()
-const registerForm = ref<Form>({
-  username: '',
-  password: '',
-})
-const registerRules = {
-  username: [
-    { required: true, message: '請輸入帳號', trigger: 'blur' },
-    { min: 3, max: 20, message: '帳號必須為 3 - 20 個字', trigger: 'blur' },
-  ],
-  password: [
-    { required: true, message: '請輸入密碼', trigger: 'blur' },
-    { min: 5, max: 20, message: '密碼必須為 5 - 20 個字', trigger: 'blur' },
-  ],
-}
-
-const handleRegister = async () => {
-  try {
-    await authApi.register(registerForm.value)
-    ElMessage.success('註冊成功！')
-    isLogin.value = true
-  } catch (error) {
-    console.log('註冊失敗', error)
   }
 }
 
@@ -114,7 +111,10 @@ const handleGuestLogin = () => {
               <!-- 跳轉至 註冊 -->
               <span>
                 沒有帳號嗎？
-                <span @click="changeForm" class="text-blue-400 cursor-pointer hover:underline">
+                <span
+                  @click="isLogin = !isLogin"
+                  class="text-blue-400 cursor-pointer hover:underline"
+                >
                   註冊
                 </span>
               </span>
@@ -157,7 +157,10 @@ const handleGuestLogin = () => {
             <!-- 跳轉至 登入 -->
             <span class="text-base font-medium">
               已經有帳號了？
-              <span @click="changeForm" class="text-blue-400 cursor-pointer hover:underline">
+              <span
+                @click="isLogin = !isLogin"
+                class="text-blue-400 cursor-pointer hover:underline"
+              >
                 登入
               </span>
             </span>

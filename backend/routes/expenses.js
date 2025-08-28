@@ -18,9 +18,10 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
-    const newExpense = await Expense.create(req.body);
+    const username = req.user.username;
+    const newExpense = await Expense.create({ username, ...req.body });
 
     res.json({
       code: 200,
