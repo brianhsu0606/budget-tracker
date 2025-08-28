@@ -34,7 +34,7 @@ const rules = {
 const handleLogin = async () => {
   const success = await authApi.login(loginForm.value)
   if (success) {
-    router.push('/home') // 登入成功導向主頁
+    router.push('/home')
   } else {
     ElMessage.error('帳號或密碼錯誤')
   }
@@ -42,7 +42,7 @@ const handleLogin = async () => {
 
 const handleGuestLogin = () => {
   authStore.guestLogin()
-  router.push('/home') // 訪客登入也導向主頁
+  router.push('/home')
 }
 </script>
 
