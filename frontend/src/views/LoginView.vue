@@ -32,8 +32,10 @@ const rules = {
 }
 
 const handleLogin = async () => {
-  const success = await authApi.login(loginForm.value)
-  if (success) {
+  const token = await authApi.login(loginForm.value)
+  console.log(token)
+
+  if (token) {
     router.push('/home')
   } else {
     ElMessage.error('帳號或密碼錯誤')

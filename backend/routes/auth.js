@@ -77,24 +77,15 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // await user.save();
-
-    // const token = jwt.sign(
-    //   {
-    //     id: user.id,
-    //     username: user.username,
-    //   },
-    //   process.env.JWT_SECRET,
-    //   { expiresIn: "7d" }
-    // );
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.json({
       code: 200,
       message: "登入成功",
-      result: 1,
+      result: token,
     });
   } catch (error) {
-    console.error("登入失敗", error.message);
+    console.error("登入失敗", error);
   }
 });
 

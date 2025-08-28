@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import toJSON from "../utils/toJSON.js";
 
 const incomeSchema = new mongoose.Schema({
+  username: { type: String },
   date: { type: Date, required: true },
   name: { type: String, required: true },
   category: { type: String, required: true },

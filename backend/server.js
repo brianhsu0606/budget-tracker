@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import connectDB from "./db/connectDB.js";
 import initDB from "./db/initDB.js";
 import expenseRoutes from "./routes/expenses.js";
 import incomeRoutes from "./routes/incomes.js";
 import authRoutes from "./routes/auth.js";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
