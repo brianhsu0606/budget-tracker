@@ -33,8 +33,19 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
+    const username = req.user.username;
+    const expense = await Expense.findById(req.params.id);
+
+    if (!expense) {
+      return res.status(404).json({ code: 404, message: "找不到支出資料" });
+    }
+
+    if (expense.username !== username) {
+      return res.status(403).json({ code: 403, message: "無權限編輯這筆資料" });
+    }
+
     const updatedExpense = await Expense.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
     res.json({
@@ -47,8 +58,19 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
+    const username = req.user.username;
+    const expense = await Expense.findById(req.params.id);
+
+    if (!expense) {
+      return res.status(404).json({ code: 404, message: "找不到支出資料" });
+    }
+
+    if (expense.username !== username) {
+      return res.status(403).json({ code: 403, message: "無權限編輯這筆資料" });
+    }
+
     await Expense.findByIdAndDelete(req.params.id);
 
     res.json({

@@ -33,8 +33,19 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
+    const username = req.user.username;
+    const income = await Income.findById(req.params.id);
+
+    if (!income) {
+      return res.status(404).json({ code: 404, message: "找不到收入資料" });
+    }
+
+    if (income.username !== username) {
+      return res.status(403).json({ code: 403, message: "無權限編輯這筆資料" });
+    }
+
     const updatedIncome = await Income.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
     res.json({
@@ -47,8 +58,19 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
+    const username = req.user.username;
+    const income = await Income.findById(req.params.id);
+
+    if (!income) {
+      return res.status(404).json({ code: 404, message: "找不到收入資料" });
+    }
+
+    if (income.username !== username) {
+      return res.status(403).json({ code: 403, message: "無權限編輯這筆資料" });
+    }
+
     await Income.findByIdAndDelete(req.params.id);
 
     res.json({
