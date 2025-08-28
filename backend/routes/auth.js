@@ -1,29 +1,101 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import fs from "fs";
+
+const SALT_ROUNDS = 10;
 
 const router = Router();
-const SECRET_KEY = "my_secret_key"; // 建議改放 .env
-const users = JSON.parse(fs.readFileSync("./users.json", "utf8"));
 
-// 登入
-router.post("/login", (req, res) => {
+// 註冊 register
+router.post("/register", async (req, res) => {
   const { username, password } = req.body;
-  const user = users.find((u) => u.username === username);
-  if (!user) return res.status(400).json({ message: "User not found" });
 
-  if (password !== user.password) {
-    return res.status(400).json({ message: "Incorrect password" });
+  try {
+    if (username.length < 5 || username.length > 20) {
+      return res.status(400).json({
+        code: 400,
+        message: "帳號必須介於 5 到 20 個字元",
+        result: null,
+      });
+    }
+
+    if (password.length < 5 || password.length > 20) {
+      return res.status(400).json({
+        code: 400,
+        message: "密碼必須介於 5 到 20 個字元",
+        result: null,
+      });
+    }
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({
+        code: 400,
+        message: "此帳號已存在",
+        result: null,
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    await User.create({
+      username,
+      password: hashedPassword,
+    });
+
+    res.json({
+      code: 200,
+      message: "註冊成功",
+      result: null,
+    });
+  } catch (error) {
+    console.error("註冊失敗", error.message);
   }
-
-  const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: "1h" });
-  res.json({ token, userId: user.id });
 });
 
-// 登出（前端刪 token 即可）
-router.post("/logout", (req, res) => {
-  res.json({ message: "Logout success" });
+// 登入
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({
+        code: 400,
+        message: "帳號或密碼錯誤",
+        result: null,
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        code: 400,
+        message: "帳號或密碼錯誤",
+        result: null,
+      });
+    }
+
+    await user.save();
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        role: user.profile.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      code: 200,
+      message: "登入成功",
+      result: token,
+    });
+  } catch (error) {
+    console.error("登入失敗", error.message);
+  }
 });
 
 export default router;

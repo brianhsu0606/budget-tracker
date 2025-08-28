@@ -18,3 +18,8 @@ export interface Category {
   icon: string
   color: string
 }
+
+export interface LoginForm {
+  username: string
+  password: string
+}

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import type { LoginForm } from '@/types/type'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { ElMessage } from 'element-plus'
+import authApi from '@/apis/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -11,8 +13,10 @@ const isLogin = ref<boolean>(true)
 const changeForm = () => {
   isLogin.value = !isLogin.value
 }
+
+// 登入
 const formRef = ref()
-const loginForm = reactive({
+const loginForm = ref<LoginForm>({
   username: '',
   password: '',
 })
@@ -28,7 +32,7 @@ const rules = {
 }
 
 const handleLogin = async () => {
-  const success = await authStore.login(loginForm.username, loginForm.password)
+  const success = await authApi.login(loginForm.value)
   if (success) {
     router.push('/home') // 登入成功導向主頁
   } else {
@@ -70,13 +74,14 @@ const handleGuestLogin = () => {
 
             <el-divider>或</el-divider>
 
-            <div class="flex justify-between items-center text-lg font-medium">
-              <p>
+            <div class="flex justify-between items-center text-base font-medium">
+              <!-- 跳轉至 註冊 -->
+              <span>
                 沒有帳號嗎？
                 <span @click="changeForm" class="text-blue-400 cursor-pointer hover:underline">
                   註冊
                 </span>
-              </p>
+              </span>
               <!-- 訪客登入 -->
               <span @click="handleGuestLogin" class="text-blue-400 cursor-pointer hover:underline">
                 訪客登入
@@ -108,13 +113,16 @@ const handleGuestLogin = () => {
             <el-button class="w-full h-10 text-base" type="primary" @click="handleLogin">
               註冊
             </el-button>
+
             <el-divider>或</el-divider>
-            <p class="text-lg font-medium">
+
+            <!-- 跳轉至 登入 -->
+            <span class="text-base font-medium">
               已經有帳號了？
               <span @click="changeForm" class="text-blue-400 cursor-pointer hover:underline">
                 登入
               </span>
-            </p>
+            </span>
           </el-form>
         </el-card>
       </div>
