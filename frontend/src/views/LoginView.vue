@@ -2,12 +2,12 @@
 import type { LoginForm } from '@/types/type'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/useAuthStore'
+import { useUserStore } from '@/stores/userStore'
 import { ElMessage } from 'element-plus'
 import authApi from '@/apis/auth'
 
 const router = useRouter()
-const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const isLogin = ref<boolean>(true)
 const changeForm = () => {
@@ -32,18 +32,22 @@ const rules = {
 }
 
 const handleLogin = async () => {
-  const token = await authApi.login(loginForm.value)
-  console.log(token)
+  try {
+    const token = await authApi.login(loginForm.value)
 
-  if (token) {
-    router.push('/home')
-  } else {
-    ElMessage.error('帳號或密碼錯誤')
+    if (token) {
+      userStore.setUser({ username: loginForm.value.username, token })
+      router.push('/home')
+    } else {
+      ElMessage.error('帳號或密碼錯誤')
+    }
+  } catch (error) {
+    console.log('登入失敗', error)
   }
 }
 
 const handleGuestLogin = () => {
-  authStore.guestLogin()
+  // userStore.guestLogin()
   router.push('/home')
 }
 </script>

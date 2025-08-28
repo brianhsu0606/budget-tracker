@@ -9,7 +9,7 @@ const authApi = {
       data,
     })
   },
-  login(data: LoginForm) {
+  login(data: LoginForm): Promise<string> {
     return request({
       url: '/login',
       method: 'post',
