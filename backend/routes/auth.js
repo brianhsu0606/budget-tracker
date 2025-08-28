@@ -12,10 +12,10 @@ router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    if (username.length < 5 || username.length > 20) {
+    if (username.length < 3 || username.length > 20) {
       return res.status(400).json({
         code: 400,
-        message: "帳號必須介於 5 到 20 個字元",
+        message: "帳號必須介於 3 到 20 個字元",
         result: null,
       });
     }
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({
         code: 400,
-        message: "帳號或密碼錯誤",
+        message: "帳號已存在",
         result: null,
       });
     }

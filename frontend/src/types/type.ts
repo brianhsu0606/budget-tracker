@@ -19,7 +19,7 @@ export interface Category {
   color: string
 }
 
-export interface LoginForm {
+export interface Form {
   username: string
   password: string
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LoginForm } from '@/types/type'
+import type { Form } from '@/types/type'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
@@ -15,15 +15,44 @@ const changeForm = () => {
 }
 
 // 登入
-const formRef = ref()
-const loginForm = ref<LoginForm>({
+const loginFormRef = ref()
+const loginForm = ref<Form>({
   username: '',
   password: '',
 })
-const rules = {
+const loginRules = {
+  username: [{ required: true, message: '請輸入帳號', trigger: 'blur' }],
+  password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
+}
+
+const handleLogin = async () => {
+  try {
+    await loginFormRef.value.validate()
+    const token = await authApi.login(loginForm.value)
+
+    if (token) {
+      userStore.setUser({ username: loginForm.value.username, token })
+      ElMessage.success('登入成功！')
+      router.push('/home')
+    } else {
+      ElMessage.error('帳號或密碼錯誤')
+    }
+  } catch (error) {
+    console.log('登入失敗', error)
+  }
+}
+
+// 註冊
+const showPassword = ref<boolean>(false)
+const registerFormRef = ref()
+const registerForm = ref<Form>({
+  username: '',
+  password: '',
+})
+const registerRules = {
   username: [
     { required: true, message: '請輸入帳號', trigger: 'blur' },
-    { min: 5, max: 20, message: '帳號必須為 5 - 20 個字', trigger: 'blur' },
+    { min: 3, max: 20, message: '帳號必須為 3 - 20 個字', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '請輸入密碼', trigger: 'blur' },
@@ -31,18 +60,13 @@ const rules = {
   ],
 }
 
-const handleLogin = async () => {
+const handleRegister = async () => {
   try {
-    const token = await authApi.login(loginForm.value)
-
-    if (token) {
-      userStore.setUser({ username: loginForm.value.username, token })
-      router.push('/home')
-    } else {
-      ElMessage.error('帳號或密碼錯誤')
-    }
+    await authApi.register(registerForm.value)
+    ElMessage.success('註冊成功！')
+    isLogin.value = true
   } catch (error) {
-    console.log('登入失敗', error)
+    console.log('註冊失敗', error)
   }
 }
 
@@ -62,17 +86,23 @@ const handleGuestLogin = () => {
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 帳號登入表單 -->
-          <el-form v-if="isLogin" ref="formRef" :model="loginForm" :rules="rules">
+          <el-form v-if="isLogin" ref="loginFormRef" :model="loginForm" :rules="loginRules">
             <el-form-item prop="username">
               <el-input v-model="loginForm.username" prefix-icon="User" placeholder="請輸入帳號" />
             </el-form-item>
             <el-form-item prop="password">
               <el-input
                 v-model="loginForm.password"
+                :type="showPassword ? 'text' : 'password'"
                 prefix-icon="Lock"
-                type="password"
                 placeholder="請輸入密碼"
-              />
+              >
+                <template #suffix>
+                  <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
+                    <View />
+                  </el-icon>
+                </template>
+              </el-input>
             </el-form-item>
             <el-button class="w-full h-10 text-base" type="primary" @click="handleLogin">
               登入
@@ -96,27 +126,29 @@ const handleGuestLogin = () => {
           </el-form>
 
           <!-- 帳號註冊表單 -->
-          <el-form v-else ref="formRef" :model="loginForm" :rules="rules">
+          <el-form v-else ref="registerFormRef" :model="registerForm" :rules="registerRules">
             <el-form-item prop="username">
-              <el-input v-model="loginForm.username" prefix-icon="User" placeholder="請輸入帳號" />
+              <el-input
+                v-model="registerForm.username"
+                prefix-icon="User"
+                placeholder="請輸入帳號"
+              />
             </el-form-item>
             <el-form-item prop="password">
               <el-input
-                v-model="loginForm.password"
+                v-model="registerForm.password"
+                :type="showPassword ? 'text' : 'password'"
                 prefix-icon="Lock"
-                type="password"
                 placeholder="請輸入密碼"
-              />
+              >
+                <template #suffix>
+                  <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
+                    <View />
+                  </el-icon>
+                </template>
+              </el-input>
             </el-form-item>
-            <el-form-item prop="password">
-              <el-input
-                v-model="loginForm.password"
-                prefix-icon="Lock"
-                type="password"
-                placeholder="再次輸入密碼"
-              />
-            </el-form-item>
-            <el-button class="w-full h-10 text-base" type="primary" @click="handleLogin">
+            <el-button class="w-full h-10 text-base" type="primary" @click="handleRegister">
               註冊
             </el-button>
 
