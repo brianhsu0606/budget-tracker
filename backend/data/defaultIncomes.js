@@ -1,4 +1,4 @@
-const incomeList = [
+const defaultIncomes = [
   { date: "2025-08-14", name: "青年就職計劃", category: "other", amount: 5000 },
   { date: "2025-08-09", name: "6208股息", category: "stock", amount: 1078 },
   { date: "2025-07-14", name: "青年就職計劃", category: "other", amount: 5000 },
@@ -11,4 +11,4 @@ const incomeList = [
   { date: "2025-01-31", name: "奇想鐘點", category: "salary", amount: 36930 },
 ];
 
-export default incomeList;
+export default defaultIncomes;

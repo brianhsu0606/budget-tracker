@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import User from "../models/userModel.js";
-import userList from "../data/defaultUser.js";
+import defaultUsers from "../data/defaultUsers.js";
 
 const initUser = async () => {
-  for (const user of userList) {
+  for (const user of defaultUsers) {
     const exist = await User.findOne({ username: user.username });
 
     if (!exist) {

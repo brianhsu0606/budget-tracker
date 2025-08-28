@@ -1,4 +1,4 @@
-const expenseList = [
+const defaultExpenses = [
   { date: "2025-08-24", name: "麻古茶坊", category: "food", amount: 90 },
   { date: "2025-08-24", name: "咖啡廳 - kafeD", category: "food", amount: 160 },
   { date: "2025-08-24", name: "午餐 - 湖畔拾光", category: "food", amount: 370 },
@@ -85,4 +85,4 @@ const expenseList = [
   { date: "2025-06-01", name: "高鐵 - 桃園台北來回", category: "transportation", amount: 320 },
 ];
 
-export default expenseList;
+export default defaultExpenses;
