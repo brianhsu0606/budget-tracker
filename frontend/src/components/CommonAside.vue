@@ -10,8 +10,9 @@ const activePath = computed(() => router.currentRoute.value.path)
 
 const pageList = [
   { path: '/home', name: 'home', label: '首頁', icon: '' },
-  { path: '/expense', name: 'expense', label: '支出頁面', icon: '' },
-  { path: '/income', name: 'income', label: '收入頁面', icon: '' },
+  { path: '/expense', name: 'expense', label: '支出', icon: '' },
+  { path: '/income', name: 'income', label: '收入', icon: '' },
+  { path: '/setting', name: 'setting', label: '設定', icon: '' },
 ]
 </script>
 
