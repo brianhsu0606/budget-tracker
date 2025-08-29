@@ -1,22 +1,27 @@
 import bcrypt from "bcrypt";
 import User from "../models/userModel.js";
-import defaultUsers from "../data/defaultUsers.js";
 
 const initUser = async () => {
-  for (const user of defaultUsers) {
-    const exist = await User.findOne({ username: user.username });
+  try {
+    const defaultUsers = [{ username: "brian", password: process.env.DEFAULT_USER_PASSWORD }];
 
-    if (!exist) {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
+    for (const user of defaultUsers) {
+      const exist = await User.findOne({ username: user.username });
 
-      await User.create({
-        username: user.username,
-        password: hashedPassword,
-        avatar: "avatar1.jpg",
-        displayName: user.username,
-      });
-      console.log(`初始化帳號 ${user.username} 完成`);
+      if (!exist) {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
+        await User.create({
+          username: user.username,
+          password: hashedPassword,
+          avatar: "avatar1.jpg",
+          displayName: user.username,
+        });
+        console.log(`初始化帳號 ${user.username} 完成`);
+      }
     }
+  } catch (error) {
+    console.error("初始化使用者時發生錯誤:", error);
   }
 };
 

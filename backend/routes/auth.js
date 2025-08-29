@@ -42,6 +42,8 @@ router.post("/register", async (req, res) => {
     await User.create({
       username,
       password: hashedPassword,
+      avatar: "avatar1.jpg",
+      displayName: username,
     });
 
     res.json({
@@ -50,7 +52,7 @@ router.post("/register", async (req, res) => {
       result: null,
     });
   } catch (error) {
-    console.error("註冊失敗", error.message);
+    console.error("註冊失敗", error);
   }
 });
 
