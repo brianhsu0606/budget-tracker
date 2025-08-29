@@ -1,4 +1,5 @@
 const defaultExpenses = [
+  { username: "brian", date: "2025-08-29", name: "七夕禮物 - 披薩包兔", category: "entertainment", amount: 540 },
   { username: "brian", date: "2025-08-24", name: "麻古茶坊", category: "food", amount: 90 },
   { username: "brian", date: "2025-08-24", name: "咖啡廳 - kafeD", category: "food", amount: 160 },
   { username: "brian", date: "2025-08-24", name: "午餐 - 湖畔拾光", category: "food", amount: 370 },
