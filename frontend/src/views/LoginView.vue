@@ -57,7 +57,8 @@ const handleLogin = async () => {
     const token = await authApi.login(loginForm.value)
 
     if (token) {
-      userStore.setUser({ username: loginForm.value.username, token })
+      userStore.setToken(token)
+
       const profile = await profileApi.getProfile()
       console.log(profile)
 

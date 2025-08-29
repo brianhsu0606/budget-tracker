@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
-  const username = ref('')
-  const token = ref('')
+  const username = ref<string>('')
+  const token = ref<string>('')
 
   // 初始化 store，刷新頁面從 localStorage 拿資料
   const initUser = () => {
@@ -15,11 +15,9 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const setUser = (userData: { username: string; token: string }) => {
-    username.value = userData.username
-    token.value = userData.token
-    localStorage.setItem('username', userData.username)
-    localStorage.setItem('token', userData.token)
+  const setToken = (newToken: string) => {
+    token.value = newToken
+    localStorage.setItem('token', newToken)
   }
 
   const logout = () => {
@@ -29,5 +27,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('token')
   }
 
-  return { username, token, initUser, setUser, logout }
+  return { username, token, initUser, setToken, logout }
 })
