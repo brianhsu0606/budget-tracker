@@ -1,18 +1,17 @@
 <script setup lang="ts">
+import type { Profile } from '@/types/type'
 import { ref } from 'vue'
-import { ElMessage, ElDialog } from 'element-plus'
+import { ElMessage, type FormInstance } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
 import profileApi from '@/apis/profile'
 
 const userStore = useUserStore()
 
-// 表單資料
-const profileForm = ref({
+const formRef = ref<FormInstance>()
+const profileForm = ref<Profile>({
   displayName: userStore.displayName,
   avatar: userStore.avatar || 'avatar1.jpg',
 })
-
-// 表單規則
 const rules = {
   displayName: [
     { required: true, message: '請輸入顯示名稱', trigger: 'blur' },
@@ -20,21 +19,18 @@ const rules = {
   ],
 }
 
-// 預設頭貼列表
 const avatars = ['avatar1.jpg', 'avatar2.jpg', 'avatar3.jpg', 'avatar4.jpg', 'avatar5.jpg']
 
-// 控制彈窗顯示
-const avatarDialogVisible = ref(false)
-
 // 選擇頭貼
+const avatarDialogVisible = ref<boolean>(false)
 const selectAvatar = (name: string) => {
   profileForm.value.avatar = name
   avatarDialogVisible.value = false
 }
 
-// 提交表單
 const handleSubmit = async () => {
   try {
+    await formRef.value?.validate()
     const updatedProfile = await profileApi.updateProfile(profileForm.value)
     userStore.setUser(updatedProfile)
     ElMessage.success('個人資料更新成功！')
@@ -45,38 +41,29 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <el-card class="w-1/2 mx-auto mt-10 p-6 rounded-lg shadow">
-    <h2 class="text-xl font-bold mb-4">個人設定</h2>
-
-    <el-form :model="profileForm" :rules="rules" label-width="100px">
-      <!-- 頭貼 -->
-      <el-form-item label="頭貼">
+  <el-card class="w-1/2 mx-auto mt-10 p-4">
+    <h2 class="text-2xl font-bold ml-4 mb-4">個人資訊</h2>
+    <!-- 頭貼 -->
+    <img
+      :src="`/src/assets/images/avatars/${profileForm.avatar}`"
+      alt="頭貼"
+      class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition block mx-auto mb-4"
+      @click="avatarDialogVisible = true"
+    />
+    <el-dialog title="選擇頭貼" v-model="avatarDialogVisible" width="700px">
+      <div class="flex justify-between gap-4">
         <img
-          :src="`/src/assets/images/avatars/${profileForm.avatar}`"
-          alt="頭貼"
-          class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
-          @click="avatarDialogVisible = true"
+          v-for="avatar in avatars"
+          :key="avatar"
+          :src="`/src/assets/images/avatars/${avatar}`"
+          alt="頭貼選項"
+          class="w-28 h-28 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
+          @click="selectAvatar(avatar)"
         />
+      </div>
+    </el-dialog>
 
-        <el-dialog
-          title="選擇頭貼"
-          v-model="avatarDialogVisible"
-          width="700px"
-          :destroy-on-close="true"
-        >
-          <div class="flex justify-between gap-4">
-            <img
-              v-for="avatar in avatars"
-              :key="avatar"
-              :src="`/src/assets/images/avatars/${avatar}`"
-              alt="頭貼選項"
-              class="w-28 h-28 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
-              @click="selectAvatar(avatar)"
-            />
-          </div>
-        </el-dialog>
-      </el-form-item>
-
+    <el-form ref="formRef" :model="profileForm" :rules="rules" label-width="100px">
       <!-- 顯示名稱 -->
       <el-form-item label="名稱" prop="displayName">
         <el-input v-model="profileForm.displayName" placeholder="請輸入顯示名稱" />
