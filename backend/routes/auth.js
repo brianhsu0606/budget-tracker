@@ -53,10 +53,11 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.error("註冊失敗", error);
+    res.status(500).json({ code: 500, message: "伺服器錯誤", result: null });
   }
 });
 
-// 登入
+// 登入 login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
