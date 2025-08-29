@@ -6,6 +6,7 @@ import { usePieChart } from '@/composables/usePieChart'
 import { usePagination } from '@/composables/usePagination'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
+import TransactionTable from '@/components/TransactionTable.vue'
 import expenseApi from '@/apis/expense'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
@@ -178,36 +179,7 @@ onMounted(() => {
         </header>
 
         <!-- 表格 table -->
-        <el-table
-          :data="pagedList"
-          @row-click="handleEdit"
-          class="2xl:text-lg font-medium cursor-pointer"
-          border
-        >
-          <el-table-column prop="date" label="日期" min-width="120">
-            <template #default="{ row }">
-              {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="name" label="花費項目" min-width="140" />
-          <el-table-column prop="category" label="分類">
-            <template #default="{ row }">
-              <div class="flex items-center gap-2">
-                <span>{{ categories.find((c) => c.key === row.category)?.title }} </span>
-                <component
-                  :is="categories.find((c) => c.key === row.category)?.icon"
-                  :class="categories.find((c) => c.key === row.category)?.color"
-                  class="w-7 p-1 rounded-lg"
-                />
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="amount" label="金額" align="right" header-align="left">
-            <template #default="{ row }">
-              {{ row.amount.toLocaleString() }}
-            </template>
-          </el-table-column>
-        </el-table>
+        <TransactionTable :data="pagedList" :categories="categories" :onRowClick="handleEdit" />
       </el-card>
 
       <!-- 分頁功能 pagination -->
