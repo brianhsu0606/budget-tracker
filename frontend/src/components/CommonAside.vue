@@ -23,7 +23,7 @@ const avatarSrc = computed(() => {
 </script>
 
 <template>
-  <div class="h-[25vh] flex flex-col items-center justify-center p-4 rounded-lg">
+  <div class="h-[25vh] flex flex-col items-center justify-center">
     <!-- 頭貼 -->
     <img
       :src="avatarSrc"
