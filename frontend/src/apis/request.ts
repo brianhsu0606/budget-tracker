@@ -7,7 +7,7 @@ const request = axios.create({
 
 request.interceptors.request.use((config) => {
   const userStore = useUserStore()
-  const token = userStore.token || localStorage.getItem('token')
+  const token = userStore.token
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -15,6 +15,7 @@ request.interceptors.request.use((config) => {
 
   return config
 })
+
 request.interceptors.response.use((res) => {
   const { code, message, result } = res.data
 

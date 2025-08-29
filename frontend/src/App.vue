@@ -1,9 +1,4 @@
-<script setup lang="ts">
-import { useUserStore } from './stores/userStore'
-
-const userStore = useUserStore()
-userStore.initUser()
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <router-view />
