@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { ElMessage } from 'element-plus'
 import authApi from '@/apis/auth'
+import profileApi from '@/apis/profile'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -57,6 +58,9 @@ const handleLogin = async () => {
 
     if (token) {
       userStore.setUser({ username: loginForm.value.username, token })
+      const profile = await profileApi.getProfile()
+      console.log(profile)
+
       ElMessage.success('登入成功！')
       router.push('/home')
     } else {
