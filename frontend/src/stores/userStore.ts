@@ -15,7 +15,6 @@ export const useUserStore = defineStore(
     }
 
     const setUser = (profile: Profile) => {
-      username.value = profile.username
       displayName.value = profile.displayName
       avatar.value = profile.avatar
     }

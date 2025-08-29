@@ -25,7 +25,6 @@ export interface Form {
 }
 
 export interface Profile {
-  username: string
-  avatar: string
   displayName: string
+  avatar: string
 }

@@ -8,6 +8,13 @@ const profileApi = {
       method: 'get',
     })
   },
+  updateProfile(data: Profile): Promise<Profile> {
+    return request({
+      url: '/profile',
+      method: 'put',
+      data,
+    })
+  },
 }
 
 export default profileApi

@@ -2,11 +2,12 @@
 import { ref } from 'vue'
 import { ElMessage, ElDialog } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
+import profileApi from '@/apis/profile'
 
 const userStore = useUserStore()
 
 // 表單資料
-const form = ref({
+const profileForm = ref({
   displayName: userStore.displayName,
   avatar: userStore.avatar || 'avatar1.jpg',
 })
@@ -27,18 +28,19 @@ const avatarDialogVisible = ref(false)
 
 // 選擇頭貼
 const selectAvatar = (name: string) => {
-  form.value.avatar = name
+  profileForm.value.avatar = name
   avatarDialogVisible.value = false
 }
 
 // 提交表單
-const handleSubmit = () => {
-  if (!form.value.displayName) {
-    ElMessage.warning('請輸入顯示名稱')
-    return
+const handleSubmit = async () => {
+  try {
+    const updatedProfile = await profileApi.updateProfile(profileForm.value)
+    userStore.setUser(updatedProfile)
+    ElMessage.success('個人資料更新成功！')
+  } catch (error) {
+    console.log('更新失敗', error)
   }
-  userStore.setUser(form.value)
-  ElMessage.success('個人資料更新成功！')
 }
 </script>
 
@@ -46,11 +48,11 @@ const handleSubmit = () => {
   <el-card class="w-1/2 mx-auto mt-10 p-6 rounded-lg shadow">
     <h2 class="text-xl font-bold mb-4">個人設定</h2>
 
-    <el-form :model="form" :rules="rules" label-width="100px">
+    <el-form :model="profileForm" :rules="rules" label-width="100px">
       <!-- 頭貼 -->
       <el-form-item label="頭貼">
         <img
-          :src="`/src/assets/images/avatars/${form.avatar}`"
+          :src="`/src/assets/images/avatars/${profileForm.avatar}`"
           alt="頭貼"
           class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
           @click="avatarDialogVisible = true"
@@ -77,7 +79,7 @@ const handleSubmit = () => {
 
       <!-- 顯示名稱 -->
       <el-form-item label="名稱" prop="displayName">
-        <el-input v-model="form.displayName" placeholder="請輸入顯示名稱" />
+        <el-input v-model="profileForm.displayName" placeholder="請輸入顯示名稱" />
       </el-form-item>
 
       <!-- 提交按鈕 -->

@@ -16,10 +16,24 @@ router.get("/", authMiddleware, async (req, res) => {
       code: 200,
       message: "成功取得個人資料",
       result: {
-        username: user.username,
         displayName: user.displayName,
         avatar: user.avatar,
       },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "伺服器錯誤" });
+  }
+});
+
+router.put("/", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedProfile = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
+
+    res.json({
+      code: 200,
+      message: "成功更新個人資料",
+      result: updatedProfile,
     });
   } catch (error) {
     res.status(500).json({ message: "伺服器錯誤" });
