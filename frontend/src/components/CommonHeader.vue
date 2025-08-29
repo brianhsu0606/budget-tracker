@@ -16,7 +16,7 @@ const handleLogout = () => {
 <template>
   <header class="flex justify-between items-center h-full px-4">
     <h3 class="text-2xl font-bold">記帳小幫手</h3>
-    <el-button @click="handleLogout">登出</el-button>
+    <el-button @click="handleLogout" type="primary">登出</el-button>
   </header>
 </template>
 

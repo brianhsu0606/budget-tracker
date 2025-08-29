@@ -9,10 +9,10 @@ const router = useRouter()
 const activePath = computed(() => router.currentRoute.value.path)
 
 const pageList = [
-  { path: '/home', name: 'home', label: '首頁', icon: '' },
-  { path: '/expense', name: 'expense', label: '支出', icon: '' },
-  { path: '/income', name: 'income', label: '收入', icon: '' },
-  { path: '/setting', name: 'setting', label: '設定', icon: '' },
+  { path: '/home', name: 'home', label: '首頁', icon: 'House' },
+  { path: '/expense', name: 'expense', label: '支出', icon: 'DataLine' },
+  { path: '/income', name: 'income', label: '收入', icon: 'Money' },
+  { path: '/setting', name: 'setting', label: '設定', icon: 'Setting' },
 ]
 
 const avatarSrc = computed(() => {
@@ -23,7 +23,7 @@ const avatarSrc = computed(() => {
 </script>
 
 <template>
-  <div class="h-[25vh] flex flex-col items-center justify-center">
+  <div class="h-[25vh] flex flex-col items-center justify-center border-b border-gray-300">
     <!-- 頭貼 -->
     <img
       :src="avatarSrc"
@@ -33,14 +33,15 @@ const avatarSrc = computed(() => {
     <!-- 顯示名稱 -->
     <h3 class="text-xl font-bold">{{ userStore.displayName }}</h3>
   </div>
-  <el-menu :default-active="activePath" router class="bg-blue-100">
+  <el-menu :default-active="activePath" router class="bg-green-50">
     <el-menu-item
       v-for="page in pageList"
       :key="page.path"
       :index="page.path"
-      class="hover:bg-blue-300"
+      class="hover:bg-[#E6F4EA] flex gap-4 items-center"
     >
-      <h3 class="text-lg font-medium">{{ page.label }}</h3>
+      <h3 class="text-lg font-medium ml-2">{{ page.label }}</h3>
+      <component :is="page.icon" class="w-6 h-6"></component>
     </el-menu-item>
   </el-menu>
 </template>
@@ -51,7 +52,7 @@ const avatarSrc = computed(() => {
   border-bottom: 0.5px solid gray;
 
   &.is-active {
-    @apply bg-blue-400;
+    @apply bg-[#BFE6C8];
   }
 }
 </style>

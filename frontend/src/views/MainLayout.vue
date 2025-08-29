@@ -5,15 +5,15 @@ import CommonAside from '@/components/CommonAside.vue'
 
 <template>
   <el-container class="h-full">
-    <el-aside class="bg-blue-200" width="250px">
+    <el-aside class="bg-[#57C273]" width="250px">
       <CommonAside />
     </el-aside>
 
     <el-container>
-      <el-header class="bg-blue-300 border-b border-gray-300">
+      <el-header class="bg-[#8FD8A6] border-b border-gray-300">
         <CommonHeader />
       </el-header>
-      <el-main class="bg-blue-50">
+      <el-main class="bg-gray-50">
         <router-view />
       </el-main>
     </el-container>

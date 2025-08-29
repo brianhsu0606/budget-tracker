@@ -166,11 +166,12 @@ onMounted(() => {
         <!-- 分類按鈕 -->
         <header class="flex mb-4">
           <el-button
+            type="primary"
             v-for="button in categoryButtons"
             :key="button.key"
             @click="filterByCategory(button.key)"
-            class="flex-1 text-white"
-            :class="{ '!bg-blue-600': selectedCategory === button.key }"
+            class="flex-1"
+            :class="{ '!bg-green-900': selectedCategory === button.key }"
           >
             {{ button.title }}
           </el-button>
