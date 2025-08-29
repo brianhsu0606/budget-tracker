@@ -1,6 +1,6 @@
 import type { Transaction, Dialog } from '@/types/type'
 import { ref, type Ref } from 'vue'
-import { ElMessage, type FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 
 export const useCrud = (
   formRef: Ref<FormInstance | undefined>,
@@ -39,7 +39,7 @@ export const useCrud = (
     formRef.value?.clearValidate()
   }
 
-  const submit = async () => {
+  const handleSubmit = async () => {
     isLoading.value = true
     try {
       await formRef.value?.validate()
@@ -61,17 +61,27 @@ export const useCrud = (
   }
 
   const handleDelete = async (id: string) => {
-    isLoading.value = true
     try {
+      await ElMessageBox.confirm('確定要刪除這筆資料嗎？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
+        type: 'warning',
+      })
+      isLoading.value = true
       await deleteApi(id)
       list.value = list.value.filter((expense) => expense.id !== id)
+      dialog.isVisible = false
       ElMessage.success('刪除成功')
     } catch (error) {
-      console.error(error)
+      // ElMessageBox 按取消會進入 catch，可以不用處理
+      if (error !== 'cancel') {
+        console.error(error)
+        ElMessage.error('刪除失敗')
+      }
     } finally {
       isLoading.value = false
     }
   }
 
-  return { list, isLoading, fetchList, handleAdd, handleEdit, handleDelete, submit }
+  return { list, isLoading, fetchList, handleAdd, handleEdit, handleDelete, handleSubmit }
 }

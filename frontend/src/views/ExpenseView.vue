@@ -42,7 +42,7 @@ const {
   handleAdd,
   handleEdit,
   handleDelete,
-  submit,
+  handleSubmit,
 } = useCrud(
   formRef,
   dialog,
@@ -178,7 +178,12 @@ onMounted(() => {
         </header>
 
         <!-- 表格 table -->
-        <el-table :data="pagedList" border class="2xl:text-lg font-medium">
+        <el-table
+          :data="pagedList"
+          @row-click="handleEdit"
+          class="2xl:text-lg font-medium cursor-pointer"
+          border
+        >
           <el-table-column prop="date" label="日期" min-width="120">
             <template #default="{ row }">
               {{ dayjs(row.date).format('YYYY/MM/DD（dd）') }}
@@ -202,12 +207,6 @@ onMounted(() => {
               {{ row.amount.toLocaleString() }}
             </template>
           </el-table-column>
-          <el-table-column label="操作" min-width="130">
-            <template #default="{ row }">
-              <el-button @click="handleEdit(row)" type="primary">編輯</el-button>
-              <el-button @click="handleDelete(row.id)" type="danger">刪除</el-button>
-            </template>
-          </el-table-column>
         </el-table>
       </el-card>
 
@@ -225,6 +224,7 @@ onMounted(() => {
 
   <!-- 表單 dialog-->
   <el-dialog v-model="dialog.isVisible">
+    <h3 class="text-xl font-bold mb-4">{{ dialog.isEdit ? '編輯支出' : '新增支出' }}</h3>
     <el-form ref="formRef" :model="dialog.form" :rules="rules">
       <el-form-item prop="date" label="日期">
         <el-date-picker v-model="dialog.form.date" />
@@ -247,8 +247,21 @@ onMounted(() => {
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submit">確認</el-button>
-      <el-button @click="dialog.isVisible = false">取消</el-button>
+      <div :class="['flex', dialog.isEdit ? 'justify-between' : 'justify-end']">
+        <el-button
+          v-if="dialog.isEdit && dialog.form.id"
+          @click="handleDelete(dialog.form.id)"
+          type="danger"
+        >
+          刪除
+        </el-button>
+        <div>
+          <el-button @click="handleSubmit" type="primary">
+            {{ dialog.isEdit ? '編輯' : '新增' }}
+          </el-button>
+          <el-button @click="dialog.isVisible = false">取消</el-button>
+        </div>
+      </div>
     </template>
   </el-dialog>
 </template>
