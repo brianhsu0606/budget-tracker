@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { Profile } from '@/types/type'
 
 export const useUserStore = defineStore('user', () => {
-  const username = ref<string>('')
   const token = ref<string>('')
+  const username = ref<string>('')
+  const displayName = ref<string>('')
+  const avatar = ref<string>('')
 
   // 初始化 store，刷新頁面從 localStorage 拿資料
   const initUser = () => {
@@ -20,6 +23,12 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('token', newToken)
   }
 
+  const setUser = (profile: Profile) => {
+    username.value = profile.username
+    displayName.value = profile.displayName
+    avatar.value = profile.avatar
+  }
+
   const logout = () => {
     username.value = ''
     token.value = ''
@@ -27,5 +36,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('token')
   }
 
-  return { username, token, initUser, setToken, logout }
+  return { token, username, avatar, displayName, initUser, setToken, setUser, logout }
 })

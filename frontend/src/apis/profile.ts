@@ -1,7 +1,8 @@
 import request from './request'
+import type { Profile } from '@/types/type'
 
 const profileApi = {
-  getProfile() {
+  getProfile(): Promise<Profile> {
     return request({
       url: '/profile',
       method: 'get',

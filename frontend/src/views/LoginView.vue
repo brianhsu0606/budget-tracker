@@ -60,7 +60,7 @@ const handleLogin = async () => {
       userStore.setToken(token)
 
       const profile = await profileApi.getProfile()
-      console.log(profile)
+      userStore.setUser(profile)
 
       ElMessage.success('登入成功！')
       router.push('/home')

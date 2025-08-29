@@ -23,6 +23,8 @@ const pageList = [
       class="w-16 h-16 rounded-full"
     /> -->
     <h3 class="text-2xl font-bold">{{ userStore.username }}</h3>
+    <h3 class="text-2xl font-bold">{{ userStore.avatar }}</h3>
+    <h3 class="text-2xl font-bold">{{ userStore.displayName }}</h3>
   </div>
   <el-menu :default-active="activePath" router class="bg-blue-100">
     <el-menu-item

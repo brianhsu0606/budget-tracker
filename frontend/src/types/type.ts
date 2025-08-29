@@ -23,3 +23,9 @@ export interface Form {
   username: string
   password: string
 }
+
+export interface Profile {
+  username: string
+  avatar: string
+  displayName: string
+}
