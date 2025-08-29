@@ -21,10 +21,7 @@ export const useUserStore = defineStore(
     }
 
     const logout = () => {
-      token.value = ''
-      username.value = ''
-      displayName.value = ''
-      avatar.value = ''
+      localStorage.removeItem('user')
     }
 
     return { token, username, displayName, avatar, setToken, setUser, logout }
