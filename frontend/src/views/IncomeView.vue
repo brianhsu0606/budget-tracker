@@ -7,6 +7,8 @@ import { usePagination } from '@/composables/usePagination'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'
+import TransactionPieChart from '@/components/TransactionPieChart.vue'
+
 import incomeApi from '@/apis/income'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
@@ -131,18 +133,17 @@ onMounted(() => {
 
   <!-- 圓餅圖 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
-    <!-- 左邊 圓餅圖、各分類金額 -->
+    <!-- 左邊 -->
     <el-col :span="10">
       <!-- 圓餅圖 -->
-      <el-card class="mb-4">
-        <header class="flex justify-between items-center text-lg font-bold">
-          <h3>{{ selectedMonth }} 支出</h3>
-          <h3>總花費：{{ totalIncome.toLocaleString() }}</h3>
-        </header>
-        <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
-      </el-card>
+      <TransactionPieChart
+        title="收入"
+        :month="selectedMonth"
+        :totalAmount="totalIncome"
+        :option="pieOption"
+      />
 
-      <!-- 各分類 總金額、比例 -->
+      <!-- 分類總金額、比例 -->
       <CategoryTable :data="categoryMap" />
     </el-col>
 

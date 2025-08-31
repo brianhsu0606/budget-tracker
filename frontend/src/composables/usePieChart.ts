@@ -1,5 +1,6 @@
 import { computed, type Ref } from 'vue'
 import type { Category } from '@/types/type'
+import type { EChartsOption, PieSeriesOption, TooltipComponentOption } from 'echarts'
 
 export const usePieChart = (categories: Category[], categorySums: Ref<Record<string, number>>) => {
   const pieData = computed(() => {
@@ -9,17 +10,9 @@ export const usePieChart = (categories: Category[], categorySums: Ref<Record<str
     }))
   })
 
-  const pieOption = computed(() => ({
-    title: {
-      left: 'center',
-    },
-    tooltip: {
-      trigger: 'item',
-    },
-    // legend: {
-    //   orient: 'vertical',
-    //   left: 'left',
-    // },
+  const pieOption = computed<EChartsOption>(() => ({
+    title: { left: 'center' },
+    tooltip: { trigger: 'item' } as TooltipComponentOption,
     series: [
       {
         name: '分類',
@@ -40,19 +33,10 @@ export const usePieChart = (categories: Category[], categorySums: Ref<Record<str
           fontSize: 14,
           fontWeight: 500,
         },
-        labelLine: {
-          show: true, // 連線到圖外
-        },
-      },
+        labelLine: { show: true },
+      } as PieSeriesOption,
     ],
-    color: [
-      '#60a5fa', // bg-blue-400
-      '#4ade80', // bg-green-400
-      '#f87171', // bg-red-400
-      '#facc15', // bg-yellow-400
-      '#fb923c', // bg-orange-400
-      '#818cf8', // bg-indigo-400
-    ],
+    color: ['#60a5fa', '#4ade80', '#f87171', '#facc15', '#fb923c', '#818cf8'],
   }))
   return { pieOption }
 }

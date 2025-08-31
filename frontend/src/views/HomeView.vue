@@ -62,14 +62,12 @@ const chartOptions = computed(() => ({
     {
       name: '收入',
       type: 'line',
-      // smooth: true,
       data: incomeByMonth.value,
       itemStyle: { color: '#4CAF50' },
     },
     {
       name: '支出',
       type: 'line',
-      // smooth: true,
       data: expenseByMonth.value,
       itemStyle: { color: '#F44336' },
     },
