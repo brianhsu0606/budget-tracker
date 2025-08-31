@@ -27,7 +27,7 @@ const dialog = reactive<Dialog>({
 })
 
 // 表單驗證
-const formRef = ref<FormInstance>()
+const formRef = ref<FormInstance | undefined>()
 const rules = {
   date: [{ required: true, message: '請選擇日期', trigger: 'blur' }],
   name: [{ required: true, message: '請輸入名稱', trigger: 'blur' }],
