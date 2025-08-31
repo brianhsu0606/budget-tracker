@@ -3,7 +3,6 @@ import type { Transaction, Dialog, Category } from '@/types/type'
 import type { FormInstance } from 'element-plus'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
-import { usePagination } from '@/composables/usePagination'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'
@@ -65,6 +64,11 @@ const filteredIncomeList = computed(() => {
   )
 })
 
+// 月份總收入
+const totalIncome = computed(() => {
+  return filteredIncomeList.value.reduce((sum, item) => sum + item.amount, 0)
+})
+
 // 分類清單
 const categories: Category[] = [
   { key: 'salary', title: '薪水', icon: 'Money', color: 'bg-green-400' },
@@ -83,11 +87,6 @@ const categorySums = computed(() => {
   )
 })
 
-// 計算總金額
-const totalIncome = computed(() => {
-  return filteredIncomeList.value.reduce((sum, item) => sum + item.amount, 0)
-})
-
 // 將 categories 多兩個屬性 amount, percentage
 const categoryMap = computed(() => {
   return categories
@@ -103,11 +102,19 @@ const categoryMap = computed(() => {
     .sort((a, b) => b.amount - a.amount)
 })
 
+// 表格分類篩選
+const selectedCategory = ref<string | null>(null)
+const handleCategoryChange = (key: string | null) => {
+  selectedCategory.value = key
+}
+const tableList = computed(() => {
+  return incomeList.value
+    .filter((income) => dayjs(income.date).format('YYYY-MM') === selectedMonth.value)
+    .filter((income) => !selectedCategory.value || income.category === selectedCategory.value)
+})
+
 // 圓餅圖
 const { pieOption } = usePieChart(categories, categorySums)
-
-// 分頁功能
-const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(filteredIncomeList)
 
 onMounted(() => {
   fetchList()
@@ -131,36 +138,26 @@ onMounted(() => {
     </header>
   </el-card>
 
-  <!-- 圓餅圖 -->
+  <!-- 內容區 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
-    <!-- 左邊 -->
     <el-col :span="10">
-      <!-- 圓餅圖 -->
       <TransactionPieChart
         title="收入"
         :month="selectedMonth"
         :totalAmount="totalIncome"
         :option="pieOption"
       />
-
-      <!-- 分類總金額、比例 -->
       <CategoryTable :data="categoryMap" />
     </el-col>
 
-    <!-- 右邊 表格 -->
     <el-col :span="14">
-      <el-card class="mb-4">
-        <TransactionTable :data="pagedList" :categories="categories" :onRowClick="handleEdit" />
-      </el-card>
-
-      <!-- 分頁功能 pagination -->
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :page-size="pageSize"
-        :current-page="currentPage"
-        :total="filteredIncomeList.length"
-        @current-change="handlePageChange"
+      <TransactionTable
+        :list="tableList"
+        :category="selectedCategory"
+        :categories="categories"
+        :month="selectedMonth"
+        @row-click="handleEdit"
+        @category-change="handleCategoryChange"
       />
     </el-col>
   </el-row>

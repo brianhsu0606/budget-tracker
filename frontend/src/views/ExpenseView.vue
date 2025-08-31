@@ -3,7 +3,6 @@ import type { Transaction, Dialog, Category } from '@/types/type'
 import type { FormInstance } from 'element-plus'
 import { onMounted, ref, computed, reactive } from 'vue'
 import { usePieChart } from '@/composables/usePieChart'
-import { usePagination } from '@/composables/usePagination'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'
@@ -54,16 +53,6 @@ const {
   expenseApi.deleteExpense,
 )
 
-// 分類清單
-const categories: Category[] = [
-  { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
-  { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-green-400' },
-  { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
-  { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-yellow-400' },
-  { key: 'daily', title: '日常', icon: 'Document', color: 'bg-orange-400' },
-  { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
-]
-
 // 月份篩選
 const currentMonth: string = dayjs().format('YYYY-MM')
 const selectedMonth = ref<string>(currentMonth)
@@ -77,6 +66,16 @@ const filteredExpenseList = computed(() => {
 const totalCost = computed(() => {
   return filteredExpenseList.value.reduce((sum, item) => sum + item.amount, 0)
 })
+
+// 分類清單
+const categories: Category[] = [
+  { key: 'food', title: '飲食', icon: 'KnifeFork', color: 'bg-blue-400' },
+  { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-green-400' },
+  { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
+  { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-yellow-400' },
+  { key: 'daily', title: '日常', icon: 'Document', color: 'bg-orange-400' },
+  { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
+]
 
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
 const categorySums = computed(() => {
@@ -105,9 +104,8 @@ const categoryMap = computed(() => {
 })
 
 // 表格分類篩選
-const categoryButtons = [{ key: null, title: '全部' }, ...categories]
 const selectedCategory = ref<string | null>(null)
-const filterByCategory = (key: string | null) => {
+const handleCategoryChange = (key: string | null) => {
   selectedCategory.value = key
 }
 const tableList = computed(() => {
@@ -118,9 +116,6 @@ const tableList = computed(() => {
 
 // 圓餅圖
 const { pieOption } = usePieChart(categories, categorySums)
-
-// 分頁功能
-const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(tableList)
 
 onMounted(() => {
   fetchList()
@@ -144,51 +139,26 @@ onMounted(() => {
     </header>
   </el-card>
 
-  <!-- 內容區，分左右 -->
+  <!-- 內容區 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
-    <!-- 左邊 -->
     <el-col :span="10">
-      <!-- 圓餅圖 -->
       <TransactionPieChart
         title="支出"
         :month="selectedMonth"
         :totalAmount="totalCost"
         :option="pieOption"
       />
-
-      <!-- 分類總金額、比例 -->
       <CategoryTable :data="categoryMap" />
     </el-col>
 
-    <!-- 右邊 -->
     <el-col :span="14">
-      <el-card class="mb-4">
-        <!-- 分類按鈕 -->
-        <header class="flex mb-4">
-          <el-button
-            type="primary"
-            v-for="button in categoryButtons"
-            :key="button.key"
-            @click="filterByCategory(button.key)"
-            class="flex-1"
-            :class="{ '!bg-green-900': selectedCategory === button.key }"
-          >
-            {{ button.title }}
-          </el-button>
-        </header>
-
-        <!-- 表格 table -->
-        <TransactionTable :data="pagedList" :categories="categories" :onRowClick="handleEdit" />
-      </el-card>
-
-      <!-- 分頁功能 pagination -->
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :page-size="pageSize"
-        :current-page="currentPage"
-        :total="tableList.length"
-        @current-change="handlePageChange"
+      <TransactionTable
+        :list="tableList"
+        :categories="categories"
+        :month="selectedMonth"
+        :category="selectedCategory"
+        @row-click="handleEdit"
+        @category-change="handleCategoryChange"
       />
     </el-col>
   </el-row>
