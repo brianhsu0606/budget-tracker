@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
 import type { Transaction } from '@/types/type'
-import dayjs from 'dayjs'
+import { computed, onMounted, ref } from 'vue'
 import expenseApi from '@/apis/expense'
 import incomeApi from '@/apis/income'
+import dayjs from 'dayjs'
 
 const expenseList = ref<Transaction[]>([])
 const incomeList = ref<Transaction[]>([])
@@ -50,25 +50,28 @@ const expenseByMonth = computed(() => {
 })
 
 const chartOptions = computed(() => ({
-  title: { text: '近 6 個月收支分析', left: 'center' },
   tooltip: { trigger: 'axis' },
-  // legend: { data: ['收入', '支出'], top: 30 },
-  xAxis: { type: 'category', data: lastSixMonths.value },
-  yAxis: { type: 'value', name: '金額' },
+  legend: {},
+  xAxis: {
+    type: 'category',
+    data: lastSixMonths.value,
+    axisLabel: { fontSize: 16, fontWeight: 'bold' },
+  },
+  yAxis: { type: 'value', axisLabel: { fontSize: 16, fontWeight: 'bold' } },
   series: [
     {
       name: '收入',
       type: 'line',
-      smooth: true,
+      // smooth: true,
       data: incomeByMonth.value,
-      lineStyle: { color: '#4CAF50' },
+      itemStyle: { color: '#4CAF50' },
     },
     {
       name: '支出',
       type: 'line',
-      smooth: true,
+      // smooth: true,
       data: expenseByMonth.value,
-      lineStyle: { color: '#F44336' },
+      itemStyle: { color: '#F44336' },
     },
   ],
 }))
@@ -96,20 +99,32 @@ onMounted(() => {
 
 <template>
   <el-card class="mb-4">
-    <h2 class="text-xl font-bold mb-4 text-center">近 6 個月收支紀錄</h2>
-    <el-table :data="monthSummary" border stripe style="width: 100%" class="text-lg font-bold">
-      <el-table-column prop="month" label="月份" width="120" />
-      <el-table-column prop="income" label="收入" align="right">
+    <h3 class="text-xl font-bold mb-4 text-center">近 6 個月收支紀錄</h3>
+    <el-table
+      :data="monthSummary.slice().reverse()"
+      stripe
+      style="width: 100%"
+      class="text-lg font-bold"
+      border
+    >
+      <el-table-column prop="month" label="月份" />
+      <el-table-column prop="income" align="right" header-align="left">
+        <template #header>
+          <span class="text-green-600 font-bold">收入</span>
+        </template>
         <template #default="{ row }">
           {{ row.income.toLocaleString() }}
         </template>
       </el-table-column>
-      <el-table-column prop="expense" label="支出" align="right">
+      <el-table-column prop="expense" align="right" header-align="left">
+        <template #header>
+          <span class="text-red-600 font-bold">支出</span>
+        </template>
         <template #default="{ row }">
           {{ row.expense.toLocaleString() }}
         </template>
       </el-table-column>
-      <el-table-column prop="balance" label="結餘" align="right">
+      <el-table-column prop="balance" label="結餘" align="right" header-align="left">
         <template #default="{ row }">
           <span :class="row.balanceColor">
             {{ row.balance.toLocaleString() }}
@@ -119,7 +134,8 @@ onMounted(() => {
     </el-table>
   </el-card>
 
-  <el-card>
+  <el-card class="relative">
+    <h3 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">近 6 個月收支分析</h3>
     <v-chart :option="chartOptions" autoresize style="height: 300px" />
   </el-card>
 </template>
