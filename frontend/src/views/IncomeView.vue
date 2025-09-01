@@ -118,9 +118,9 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <el-card class="mb-4">
-    <header class="flex justify-between items-center">
-      <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4">新增收入</el-button>
-      <h3 class="text-2xl font-semibold">收入分析</h3>
+    <header class="flex flex-col sm:flex-row justify-between items-first gap-4">
+      <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4"> 新增收入 </el-button>
+      <h3 class="text-2xl font-semibold text-center order-first sm:order-none">收入分析</h3>
       <el-date-picker
         v-model="selectedMonth"
         type="month"
@@ -128,6 +128,7 @@ onMounted(() => {
         value-format="YYYY-MM"
         :clearable="false"
         class="text-lg"
+        size="large"
       />
     </header>
   </el-card>

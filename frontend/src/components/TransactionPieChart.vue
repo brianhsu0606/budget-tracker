@@ -23,20 +23,22 @@ const { pieOption } = usePieChart(props.categories, categorySumsRef, props.title
 </script>
 
 <template>
-  <el-card class="mb-4">
-    <header
-      class="flex justify-between items-center border-b border-gray-400 pb-2 text-xl font-bold"
-    >
-      <h3>{{ month }} {{ titleMap[title] }}</h3>
-      <h3>
-        <span>總{{ titleMap[title] }}： </span>
-        <span :class="[title === 'expense' ? 'text-red-600' : 'text-green-600']">
-          {{ totalAmount.toLocaleString() }}
-        </span>
-      </h3>
-    </header>
-    <v-chart :option="pieOption" autoresize style="height: 250px" />
-  </el-card>
+  <div class="overflow-x-auto">
+    <el-card class="mb-4 min-w-[360px]">
+      <header
+        class="flex justify-between items-center border-b border-gray-400 pb-2 text-xl font-bold"
+      >
+        <h3>{{ month }} {{ titleMap[title] }}</h3>
+        <h3>
+          <span>總{{ titleMap[title] }}： </span>
+          <span :class="[title === 'expense' ? 'text-red-600' : 'text-green-600']">
+            {{ totalAmount.toLocaleString() }}
+          </span>
+        </h3>
+      </header>
+      <v-chart :option="pieOption" autoresize style="height: 250px" />
+    </el-card>
+  </div>
 </template>
 
 <style scoped lang="scss"></style>
