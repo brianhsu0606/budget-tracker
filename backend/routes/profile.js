@@ -4,7 +4,7 @@ import User from "../models/userModel.js";
 
 const router = Router();
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
@@ -21,11 +21,11 @@ router.get("/", authMiddleware, async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "伺服器錯誤" });
+    next(error);
   }
 });
 
-router.put("/", authMiddleware, async (req, res) => {
+router.put("/", authMiddleware, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const updatedProfile = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
@@ -36,7 +36,7 @@ router.put("/", authMiddleware, async (req, res) => {
       result: updatedProfile,
     });
   } catch (error) {
-    res.status(500).json({ message: "伺服器錯誤" });
+    next(error);
   }
 });
 

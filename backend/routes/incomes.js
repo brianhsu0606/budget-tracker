@@ -3,7 +3,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import Income from "../models/incomeModel.js";
 const router = Router();
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const incomeList = await Income.find({ username }).sort({ date: -1 });
@@ -14,11 +14,11 @@ router.get("/", authMiddleware, async (req, res) => {
       result: incomeList,
     });
   } catch (error) {
-    console.error("獲取收入失敗", error.message);
+    next(error);
   }
 });
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const newIncome = await Income.create({ username, ...req.body });
@@ -29,11 +29,11 @@ router.post("/", authMiddleware, async (req, res) => {
       result: newIncome,
     });
   } catch (error) {
-    console.error("新增收入失敗", error.message);
+    next(error);
   }
 });
 
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const income = await Income.findById(req.params.id);
@@ -54,11 +54,11 @@ router.put("/:id", authMiddleware, async (req, res) => {
       result: updatedIncome,
     });
   } catch (error) {
-    console.error("編輯收入失敗", error.message);
+    next(error);
   }
 });
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const income = await Income.findById(req.params.id);
@@ -79,7 +79,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       result: null,
     });
   } catch (error) {
-    console.error("刪除收入失敗", error.message);
+    next(error);
   }
 });
 

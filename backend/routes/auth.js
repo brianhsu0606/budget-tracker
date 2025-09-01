@@ -7,7 +7,7 @@ const router = Router();
 const SALT_ROUNDS = 10;
 
 // 註冊 register
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -51,13 +51,12 @@ router.post("/register", async (req, res) => {
       result: null,
     });
   } catch (error) {
-    console.error("註冊失敗", error);
-    res.status(500).json({ code: 500, message: "伺服器錯誤", result: null });
+    next(error);
   }
 });
 
 // 登入 login
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -87,7 +86,7 @@ router.post("/login", async (req, res) => {
       result: token,
     });
   } catch (error) {
-    console.error("登入失敗", error);
+    next(error);
   }
 });
 

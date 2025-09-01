@@ -25,6 +25,11 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/incomes", incomeRoutes);
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ code: 500, message: "伺服器錯誤" });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

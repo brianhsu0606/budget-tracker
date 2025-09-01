@@ -3,7 +3,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import Expense from "../models/expenseModel.js";
 const router = Router();
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const expenseList = await Expense.find({ username }).sort({ date: -1 });
@@ -14,11 +14,11 @@ router.get("/", authMiddleware, async (req, res) => {
       result: expenseList,
     });
   } catch (error) {
-    console.error("獲取支出失敗", error.message);
+    next(error);
   }
 });
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const newExpense = await Expense.create({ username, ...req.body });
@@ -29,11 +29,11 @@ router.post("/", authMiddleware, async (req, res) => {
       result: newExpense,
     });
   } catch (error) {
-    console.error("新增支出失敗", error.message);
+    next(error);
   }
 });
 
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const expense = await Expense.findById(req.params.id);
@@ -54,11 +54,11 @@ router.put("/:id", authMiddleware, async (req, res) => {
       result: updatedExpense,
     });
   } catch (error) {
-    console.error("編輯支出失敗", error.message);
+    next(error);
   }
 });
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res, next) => {
   try {
     const username = req.user.username;
     const expense = await Expense.findById(req.params.id);
@@ -79,7 +79,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       result: null,
     });
   } catch (error) {
-    console.error("刪除支出失敗", error.message);
+    next(error);
   }
 });
 
