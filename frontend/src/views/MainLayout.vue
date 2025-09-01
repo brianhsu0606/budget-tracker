@@ -1,18 +1,41 @@
 <script setup lang="ts">
 import CommonHeader from '@/components/CommonHeader.vue'
 import CommonAside from '@/components/CommonAside.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const isAsideVisible = ref<boolean>(true)
+
+const checkScreen = () => {
+  isAsideVisible.value = window.innerWidth >= 1024
+}
+
+onMounted(() => {
+  checkScreen()
+  window.addEventListener('resize', checkScreen)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkScreen)
+})
 </script>
 
 <template>
   <el-container class="h-full">
-    <el-aside class="bg-[#57C273]" width="250px">
-      <CommonAside />
-    </el-aside>
+    <el-header class="bg-[#8FD8A6] border-b border-gray-300">
+      <CommonHeader>
+        <el-button
+          type="primary"
+          class="sm:hidden"
+          @click="isAsideVisible = !isAsideVisible"
+          icon="Expand"
+        />
+      </CommonHeader>
+    </el-header>
 
     <el-container>
-      <el-header class="bg-[#8FD8A6] border-b border-gray-300">
-        <CommonHeader />
-      </el-header>
+      <el-aside v-if="isAsideVisible" class="bg-[#57C273] w-40 sm:w-64">
+        <CommonAside />
+      </el-aside>
       <el-main class="bg-gray-50">
         <router-view />
       </el-main>
