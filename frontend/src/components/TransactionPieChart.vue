@@ -12,9 +12,14 @@ const props = defineProps<{
   categorySums: Record<string, number>
 }>()
 
+const titleMap: Record<string, string> = {
+  expense: '支出',
+  income: '收入',
+}
+
 const categorySumsRef = toRef(props, 'categorySums')
 
-const { pieOption } = usePieChart(props.categories, categorySumsRef)
+const { pieOption } = usePieChart(props.categories, categorySumsRef, props.title)
 </script>
 
 <template>
@@ -22,10 +27,10 @@ const { pieOption } = usePieChart(props.categories, categorySumsRef)
     <header
       class="flex justify-between items-center border-b border-gray-400 pb-2 text-xl font-bold"
     >
-      <h3>{{ month }} {{ title }}</h3>
+      <h3>{{ month }} {{ titleMap[title] }}</h3>
       <h3>
-        <span>總{{ title }}： </span>
-        <span :class="[title === '支出' ? 'text-red-600' : 'text-green-600']">
+        <span>總{{ titleMap[title] }}： </span>
+        <span :class="[title === 'expense' ? 'text-red-600' : 'text-green-600']">
           {{ totalAmount.toLocaleString() }}
         </span>
       </h3>

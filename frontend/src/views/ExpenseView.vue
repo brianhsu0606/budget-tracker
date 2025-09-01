@@ -72,8 +72,8 @@ const categories: Category[] = [
   { key: 'transportation', title: '交通', icon: 'Van', color: 'bg-green-400' },
   { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
   { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-yellow-400' },
-  { key: 'daily', title: '日常', icon: 'Document', color: 'bg-orange-400' },
-  { key: 'other', title: '其他', icon: 'Menu', color: 'bg-indigo-400' },
+  { key: 'daily', title: '日常', icon: 'Box', color: 'bg-orange-400' },
+  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
 ]
 
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
@@ -139,7 +139,7 @@ onMounted(() => {
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <el-col :span="10">
       <TransactionPieChart
-        title="支出"
+        title="expense"
         :month="selectedMonth"
         :totalAmount="totalCost"
         :categories="categories"

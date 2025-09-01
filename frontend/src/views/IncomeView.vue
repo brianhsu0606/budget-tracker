@@ -70,7 +70,7 @@ const totalIncome = computed(() => {
 const categories: Category[] = [
   { key: 'salary', title: '薪水', icon: 'Money', color: 'bg-green-400' },
   { key: 'stock', title: '股票', icon: 'DataLine', color: 'bg-red-400' },
-  { key: 'other', title: '其他', icon: 'Document', color: 'bg-blue-400' },
+  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
 ]
 
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
@@ -136,7 +136,7 @@ onMounted(() => {
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <el-col :span="10">
       <TransactionPieChart
-        title="收入"
+        title="income"
         :month="selectedMonth"
         :totalAmount="totalIncome"
         :categories="categories"

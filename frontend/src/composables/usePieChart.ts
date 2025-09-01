@@ -1,7 +1,27 @@
 import { computed, type Ref } from 'vue'
 import type { Category } from '@/types/type'
 
-export const usePieChart = (categories: Category[], categorySums: Ref<Record<string, number>>) => {
+export const usePieChart = (
+  categories: Category[],
+  categorySums: Ref<Record<string, number>>,
+  title: string,
+) => {
+  const colorMap: Record<string, string[]> = {
+    expense: [
+      '#60a5fa', // blue-400
+      '#4ade80', // green-400
+      '#f87171', // red-400
+      '#facc15', // yellow-400
+      '#fb923c', // orange-400
+      '#9CA3AF', // gray-400
+    ],
+    income: [
+      '#4ade80', // green-400
+      '#f87171', // red-400
+      '#9CA3AF', // gray-400
+    ],
+  }
+
   const pieData = computed(() => {
     const hasData = categories.some((c) => categorySums.value[c.key] > 0)
 
@@ -41,7 +61,7 @@ export const usePieChart = (categories: Category[], categorySums: Ref<Record<str
         },
       },
     ],
-    color: ['#60a5fa', '#4ade80', '#f87171', '#facc15', '#fb923c', '#818cf8'],
+    color: colorMap[title],
   }))
   return { pieOption }
 }
