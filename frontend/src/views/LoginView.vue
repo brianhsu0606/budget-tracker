@@ -11,6 +11,7 @@ import { getErrorMessage } from '@/utils/error'
 const router = useRouter()
 const userStore = useUserStore()
 
+const isLoading = ref<boolean>(false)
 const isLogin = ref<boolean>(true)
 const showPassword = ref<boolean>(false)
 
@@ -32,12 +33,15 @@ const registerRules = {
 }
 
 const handleRegister = async () => {
+  isLoading.value = true
   try {
     await authApi.register(registerForm.value)
     ElMessage.success('註冊成功！')
     isLogin.value = true
   } catch (error) {
     ElMessage.error(getErrorMessage(error, '註冊失敗'))
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -53,6 +57,7 @@ const loginRules = {
 }
 
 const handleLogin = async () => {
+  isLoading.value = true
   try {
     await loginFormRef.value.validate()
     const token = await authApi.login(loginForm.value)
@@ -68,17 +73,19 @@ const handleLogin = async () => {
     }
   } catch (error) {
     ElMessage.error(getErrorMessage(error, '登入失敗'))
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
 
 <template>
   <el-row class="h-full">
-    <el-col :span="12" class="bg-green-300"></el-col>
+    <el-col :xs="0" :lg="12" class="bg-green-300"></el-col>
 
-    <el-col :span="12" class="bg-green-100">
+    <el-col :xs="24" :lg="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">
-        <el-card class="px-4 py-2 rounded-xl w-1/2 max-w-[500px]">
+        <el-card class="px-4 py-2 rounded-xl w-[85%] sm:w-1/2 max-w-[540px]">
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 帳號登入表單 -->
@@ -100,7 +107,12 @@ const handleLogin = async () => {
                 </template>
               </el-input>
             </el-form-item>
-            <el-button class="w-full h-10 text-base" type="primary" @click="handleLogin">
+            <el-button
+              @click="handleLogin"
+              type="primary"
+              class="w-full h-10 text-base"
+              :loading="isLoading"
+            >
               登入
             </el-button>
 
@@ -141,7 +153,12 @@ const handleLogin = async () => {
                 </template>
               </el-input>
             </el-form-item>
-            <el-button class="w-full h-10 text-base" type="primary" @click="handleRegister">
+            <el-button
+              @click="handleRegister"
+              type="primary"
+              class="w-full h-10 text-base"
+              :loading="isLoading"
+            >
               註冊
             </el-button>
 
