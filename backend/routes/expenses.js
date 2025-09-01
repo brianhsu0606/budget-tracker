@@ -6,7 +6,7 @@ const router = Router();
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const username = req.user.username;
-    const expenseList = await Expense.find({ username });
+    const expenseList = await Expense.find({ username }).sort({ date: -1 });
 
     res.json({
       code: 200,
