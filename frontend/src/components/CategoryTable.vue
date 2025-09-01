@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
   <el-card>
-    <el-table :data="data" border class="text-lg font-bold">
+    <el-table :data="data" border class="text-base sm:text-lg font-bold">
       <el-table-column prop="title" label="分類">
         <template #default="{ row }">
           <div class="flex items-center gap-4">

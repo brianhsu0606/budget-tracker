@@ -137,7 +137,7 @@ onMounted(() => {
 
   <!-- 內容區 -->
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
-    <el-col :span="10">
+    <el-col :sm="24" :lg="10" class="mb-4 sm:mb-0">
       <TransactionPieChart
         title="expense"
         :month="selectedMonth"
@@ -148,7 +148,7 @@ onMounted(() => {
       <CategoryTable :data="categoryMap" />
     </el-col>
 
-    <el-col :span="14">
+    <el-col :sm="24" :lg="14">
       <TransactionTable
         :list="tableList"
         :categories="categories"
