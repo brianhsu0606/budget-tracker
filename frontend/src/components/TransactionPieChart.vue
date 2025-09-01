@@ -19,11 +19,18 @@ const { pieOption } = usePieChart(props.categories, categorySumsRef)
 
 <template>
   <el-card class="mb-4">
-    <header class="flex justify-between items-center text-lg font-bold">
+    <header
+      class="flex justify-between items-center border-b border-gray-400 pb-2 text-xl font-bold"
+    >
       <h3>{{ month }} {{ title }}</h3>
-      <h3>總花費：{{ totalAmount.toLocaleString() }}</h3>
+      <h3>
+        <span>總{{ title }}： </span>
+        <span :class="[title === '支出' ? 'text-red-600' : 'text-green-600']">
+          {{ totalAmount.toLocaleString() }}
+        </span>
+      </h3>
     </header>
-    <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
+    <v-chart :option="pieOption" autoresize style="height: 250px" />
   </el-card>
 </template>
 

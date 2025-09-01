@@ -2,7 +2,6 @@
 import type { Transaction, Dialog, Category } from '@/types/type'
 import type { FormInstance } from 'element-plus'
 import { onMounted, ref, computed, reactive } from 'vue'
-// import { usePieChart } from '@/composables/usePieChart'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'

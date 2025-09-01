@@ -6,7 +6,6 @@ import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'
 import TransactionPieChart from '@/components/TransactionPieChart.vue'
-
 import incomeApi from '@/apis/income'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
@@ -19,7 +18,6 @@ const defaultForm: Transaction = {
   category: 'salary',
   amount: 0,
 }
-
 const dialog = reactive<Dialog>({
   isVisible: false,
   isEdit: false,
@@ -138,7 +136,7 @@ onMounted(() => {
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <el-col :span="10">
       <TransactionPieChart
-        title="支出"
+        title="收入"
         :month="selectedMonth"
         :totalAmount="totalIncome"
         :categories="categories"

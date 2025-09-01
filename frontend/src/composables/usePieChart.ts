@@ -2,20 +2,22 @@ import { computed, type Ref } from 'vue'
 import type { Category } from '@/types/type'
 
 export const usePieChart = (categories: Category[], categorySums: Ref<Record<string, number>>) => {
-  console.log('categories', categories)
-  console.log('categorySums', categorySums)
-
   const pieData = computed(() => {
+    const hasData = categories.some((c) => categorySums.value[c.key] > 0)
+
+    if (!hasData) {
+      // 無資料時顯示灰色圓餅
+      return [{ name: '無資料', value: 0, itemStyle: { color: '#e5e7eb' } }] // gray-200
+    }
+
     return categories.map((c) => ({
       name: c.title,
       value: categorySums.value[c.key],
     }))
   })
-  console.log('pieData', pieData)
 
   const pieOption = computed(() => ({
-    title: { left: 'center' },
-    tooltip: { trigger: 'item' },
+    tooltip: {},
     series: [
       {
         name: '分類',
@@ -30,18 +32,16 @@ export const usePieChart = (categories: Category[], categorySums: Ref<Record<str
           },
         },
         label: {
-          show: true,
-          formatter: (params: { name: string; value: number; percent: number }) =>
-            params.value === 0 ? '' : `${params.name}: ${params.percent.toFixed(1)}%`,
-          fontSize: 14,
+          formatter: (params: { name: string; value: number; percent: number }) => {
+            if (params.name === '無資料') return ''
+            return `${params.name}: ${params.percent.toFixed(1)}%`
+          },
+          fontSize: 16,
           fontWeight: 500,
         },
-        labelLine: { show: true },
       },
     ],
     color: ['#60a5fa', '#4ade80', '#f87171', '#facc15', '#fb923c', '#818cf8'],
   }))
-  console.log(pieOption)
-
   return { pieOption }
 }
