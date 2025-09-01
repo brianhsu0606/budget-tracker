@@ -41,44 +41,40 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <el-card class="w-1/2 mx-auto mt-10 p-4">
-    <h2 class="text-2xl font-bold ml-4 mb-4">個人資訊</h2>
-    <!-- 頭貼 -->
-    <img
-      :src="`/src/assets/images/avatars/${profileForm.avatar}`"
-      alt="頭貼"
-      class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition block mx-auto mb-4"
-      @click="avatarDialogVisible = true"
-    />
-    <el-dialog title="選擇頭貼" v-model="avatarDialogVisible" width="700px">
-      <div class="flex justify-between gap-4">
-        <img
-          v-for="avatar in avatars"
-          :key="avatar"
-          :src="`/src/assets/images/avatars/${avatar}`"
-          alt="頭貼選項"
-          class="w-28 h-28 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
-          @click="selectAvatar(avatar)"
-        />
-      </div>
-    </el-dialog>
+  <div class="overflow-x-auto">
+    <el-card class="min-w-[360px] sm:w-1/2 mx-auto mt-6 p-4">
+      <h2 class="text-2xl font-bold ml-4 mb-4">個人資訊</h2>
+      <!-- 頭貼 -->
+      <img
+        :src="`/src/assets/images/avatars/${profileForm.avatar}`"
+        alt="頭貼"
+        class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition block mx-auto mb-4"
+        @click="avatarDialogVisible = true"
+      />
 
-    <el-form ref="formRef" :model="profileForm" :rules="rules" label-width="100px">
-      <!-- 顯示名稱 -->
-      <el-form-item label="名稱" prop="displayName">
-        <el-input v-model="profileForm.displayName" placeholder="請輸入顯示名稱" />
-      </el-form-item>
+      <el-dialog title="選擇頭貼" v-model="avatarDialogVisible" class="sm:w-[700px]" width="80%">
+        <div class="flex flex-wrap justify-between gap-4">
+          <img
+            v-for="avatar in avatars"
+            :key="avatar"
+            :src="`/src/assets/images/avatars/${avatar}`"
+            alt="頭貼選項"
+            class="w-20 h-20 sm:w-28 sm:h-28 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
+            @click="selectAvatar(avatar)"
+          />
+        </div>
+      </el-dialog>
 
-      <!-- 提交按鈕 -->
-      <el-form-item>
-        <el-button type="primary" @click="handleSubmit">更新</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+      <el-form ref="formRef" :model="profileForm" :rules="rules" label-width="60px">
+        <el-form-item label="名稱" prop="displayName">
+          <el-input v-model="profileForm.displayName" placeholder="請輸入顯示名稱" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSubmit" class="w-full">更新</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
 </template>
 
-<style scoped>
-img {
-  object-fit: cover;
-}
-</style>
+<style scoped lang="scss"></style>
