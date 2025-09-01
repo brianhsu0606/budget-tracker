@@ -16,14 +16,25 @@ request.interceptors.request.use((config) => {
   return config
 })
 
-request.interceptors.response.use((res) => {
-  const { code, message, result } = res.data
+request.interceptors.response.use(
+  (res) => {
+    const { code, message, result } = res.data
 
-  if (code === 200) {
-    return result
-  } else {
-    return Promise.reject(message)
-  }
-})
+    if (code === 200) {
+      return result
+    } else {
+      return Promise.reject(new Error(message))
+    }
+  },
+  (error) => {
+    // 這裡處理非 2xx 的情況
+    if (error.response && error.response.data && error.response.data.message) {
+      return Promise.reject(new Error(error.response.data.message))
+    }
+
+    // 網路錯誤或其他錯誤
+    return Promise.reject(new Error(error.message || '伺服器錯誤'))
+  },
+)
 
 export default request

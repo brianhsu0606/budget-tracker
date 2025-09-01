@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/userStore'
 import { ElMessage } from 'element-plus'
 import authApi from '@/apis/auth'
 import profileApi from '@/apis/profile'
+import { getErrorMessage } from '@/utils/error'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -36,7 +37,7 @@ const handleRegister = async () => {
     ElMessage.success('註冊成功！')
     isLogin.value = true
   } catch (error) {
-    console.log('註冊失敗', error)
+    ElMessage.error(getErrorMessage(error, '註冊失敗'))
   }
 }
 
@@ -64,25 +65,18 @@ const handleLogin = async () => {
 
       ElMessage.success('登入成功！')
       router.push('/home')
-    } else {
-      ElMessage.error('帳號或密碼錯誤')
     }
   } catch (error) {
-    console.log('登入失敗', error)
+    ElMessage.error(getErrorMessage(error, '登入失敗'))
   }
-}
-
-const handleGuestLogin = () => {
-  // userStore.guestLogin()
-  router.push('/home')
 }
 </script>
 
 <template>
   <el-row class="h-full">
-    <el-col :span="12" class="bg-blue-300"></el-col>
+    <el-col :span="12" class="bg-green-300"></el-col>
 
-    <el-col :span="12" class="bg-blue-100">
+    <el-col :span="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">
         <el-card class="px-4 py-2 rounded-xl w-1/2 max-w-[500px]">
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
@@ -112,22 +106,16 @@ const handleGuestLogin = () => {
 
             <el-divider>或</el-divider>
 
-            <div class="flex justify-between items-center text-base font-medium">
-              <!-- 跳轉至 註冊 -->
-              <span>
-                沒有帳號嗎？
-                <span
-                  @click="isLogin = !isLogin"
-                  class="text-blue-400 cursor-pointer hover:underline"
-                >
-                  註冊
-                </span>
+            <!-- 跳轉至 註冊 -->
+            <span class="text-base font-medium">
+              沒有帳號嗎？
+              <span
+                @click="isLogin = !isLogin"
+                class="text-green-600 cursor-pointer hover:underline"
+              >
+                註冊
               </span>
-              <!-- 訪客登入 -->
-              <span @click="handleGuestLogin" class="text-blue-400 cursor-pointer hover:underline">
-                訪客登入
-              </span>
-            </div>
+            </span>
           </el-form>
 
           <!-- 帳號註冊表單 -->
@@ -164,7 +152,7 @@ const handleGuestLogin = () => {
               已經有帳號了？
               <span
                 @click="isLogin = !isLogin"
-                class="text-blue-400 cursor-pointer hover:underline"
+                class="text-green-600 cursor-pointer hover:underline"
               >
                 登入
               </span>

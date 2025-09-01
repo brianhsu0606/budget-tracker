@@ -3,9 +3,8 @@ import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const SALT_ROUNDS = 10;
-
 const router = Router();
+const SALT_ROUNDS = 10;
 
 // 註冊 register
 router.post("/register", async (req, res) => {
@@ -66,7 +65,7 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({
         code: 400,
-        message: "帳號已存在",
+        message: "帳號或密碼錯誤",
         result: null,
       });
     }
