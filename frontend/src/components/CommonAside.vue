@@ -8,6 +8,14 @@ const userStore = useUserStore()
 const router = useRouter()
 const activePath = computed(() => router.currentRoute.value.path)
 
+const emit = defineEmits<{
+  (e: 'item-click', route: string): void
+}>()
+
+const handleClick = (route: string) => {
+  emit('item-click', route)
+}
+
 const pageList = [
   { path: '/home', name: 'home', label: '首頁', icon: 'House' },
   { path: '/expense', name: 'expense', label: '支出', icon: 'DataLine' },
@@ -39,6 +47,7 @@ const avatarSrc = computed(() => {
       :key="page.path"
       :index="page.path"
       class="hover:bg-[#E6F4EA] flex gap-4 items-center"
+      @click="handleClick(page.path)"
     >
       <h3 class="text-lg font-medium ml-2">{{ page.label }}</h3>
       <component :is="page.icon" class="w-6 h-6"></component>
