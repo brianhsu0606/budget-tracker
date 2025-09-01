@@ -63,7 +63,7 @@ onMounted(() => {
     <el-table
       :data="monthSummary.slice().reverse()"
       style="width: 100%"
-      class="text-lg font-bold"
+      class="sm:text-lg font-bold"
       stripe
       border
     >
@@ -95,10 +95,12 @@ onMounted(() => {
   </el-card>
 
   <!-- 折線圖 -->
-  <el-card class="relative">
-    <h3 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">近 6 個月收支分析</h3>
-    <v-chart :option="chartOptions" autoresize style="height: 300px" />
-  </el-card>
+  <div class="overflow-x-auto">
+    <el-card class="relative min-w-[600px]">
+      <h3 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">近 6 個月收支分析</h3>
+      <v-chart :option="chartOptions" autoresize style="height: 300px" />
+    </el-card>
+  </div>
 </template>
 
 <style scoped lang="scss"></style>
