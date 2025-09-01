@@ -1,27 +1,20 @@
 <script setup lang="ts">
-import type { Transaction } from '@/types/type'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useSixMonthSummary } from '@/composables/useSixMonthSummary'
+import { useReadOnly } from '@/composables/useReadOnly'
 import expenseApi from '@/apis/expense'
 import incomeApi from '@/apis/income'
 
-const expenseList = ref<Transaction[]>([])
-const incomeList = ref<Transaction[]>([])
-
-const fetchExpenseList = async () => {
-  try {
-    expenseList.value = await expenseApi.getExpenseList()
-  } catch (error) {
-    console.log(error)
-  }
-}
-const fetchIncomeList = async () => {
-  try {
-    incomeList.value = await incomeApi.getIncomeList()
-  } catch (error) {
-    console.log(error)
-  }
-}
+const {
+  list: expenseList,
+  isLoading: isExpenseLoading,
+  fetchList: fetchExpenseList,
+} = useReadOnly(expenseApi.getExpenseList)
+const {
+  list: incomeList,
+  isLoading: isIncomeLoading,
+  fetchList: fetchIncomeList,
+} = useReadOnly(incomeApi.getIncomeList)
 
 const { lastSixMonths, incomeByMonth, expenseByMonth, monthSummary } = useSixMonthSummary(
   incomeList,
@@ -60,7 +53,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-card class="mb-4">
+  <el-card
+    v-loading="isExpenseLoading && isIncomeLoading"
+    element-loading-text="載入中，請稍後..."
+    class="mb-4"
+  >
     <!-- 表格 -->
     <h3 class="text-xl font-bold mb-4 text-center">近 6 個月收支紀錄</h3>
     <el-table
