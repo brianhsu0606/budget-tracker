@@ -1,18 +1,21 @@
 import { computed, type Ref } from 'vue'
 import type { Category } from '@/types/type'
-import type { EChartsOption, PieSeriesOption, TooltipComponentOption } from 'echarts'
 
 export const usePieChart = (categories: Category[], categorySums: Ref<Record<string, number>>) => {
+  console.log('categories', categories)
+  console.log('categorySums', categorySums)
+
   const pieData = computed(() => {
     return categories.map((c) => ({
       name: c.title,
       value: categorySums.value[c.key],
     }))
   })
+  console.log('pieData', pieData)
 
-  const pieOption = computed<EChartsOption>(() => ({
+  const pieOption = computed(() => ({
     title: { left: 'center' },
-    tooltip: { trigger: 'item' } as TooltipComponentOption,
+    tooltip: { trigger: 'item' },
     series: [
       {
         name: '分類',
@@ -34,9 +37,11 @@ export const usePieChart = (categories: Category[], categorySums: Ref<Record<str
           fontWeight: 500,
         },
         labelLine: { show: true },
-      } as PieSeriesOption,
+      },
     ],
     color: ['#60a5fa', '#4ade80', '#f87171', '#facc15', '#fb923c', '#818cf8'],
   }))
+  console.log(pieOption)
+
   return { pieOption }
 }

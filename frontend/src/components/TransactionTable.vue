@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Transaction, Category } from '@/types/type'
-import { computed } from 'vue'
+import { toRef } from 'vue'
 import { usePagination } from '@/composables/usePagination'
 import dayjs from 'dayjs'
 
@@ -11,14 +11,13 @@ const props = defineProps<{
   category: string | null
 }>()
 
-const listRef = computed(() => props.list)
+const listRef = toRef(props, 'list')
 
 const emit = defineEmits<{
   (e: 'row-click', row: Transaction): void
   (e: 'category-change', key: string | null): void
 }>()
 
-// 分頁功能
 const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(listRef)
 </script>
 

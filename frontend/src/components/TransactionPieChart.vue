@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import type { EChartsOption } from 'echarts'
+import type { Category } from '@/types/type'
+import { toRef } from 'vue'
+import { usePieChart } from '@/composables/usePieChart'
 
-defineProps<{
+const props = defineProps<{
   title: string
   month: string
   totalAmount: number
-  option: EChartsOption
+
+  categories: Category[]
+  categorySums: Record<string, number>
 }>()
+
+const categorySumsRef = toRef(props, 'categorySums')
+
+const { pieOption } = usePieChart(props.categories, categorySumsRef)
 </script>
 
 <template>
@@ -15,7 +23,7 @@ defineProps<{
       <h3>{{ month }} {{ title }}</h3>
       <h3>總花費：{{ totalAmount.toLocaleString() }}</h3>
     </header>
-    <v-chart :option="option" autoresize style="height: 250px"></v-chart>
+    <v-chart :option="pieOption" autoresize style="height: 250px"></v-chart>
   </el-card>
 </template>
 

@@ -2,7 +2,6 @@
 import type { Transaction, Dialog, Category } from '@/types/type'
 import type { FormInstance } from 'element-plus'
 import { onMounted, ref, computed, reactive } from 'vue'
-import { usePieChart } from '@/composables/usePieChart'
 import { useCrud } from '@/composables/useCrud'
 import CategoryTable from '@/components/CategoryTable.vue'
 import TransactionTable from '@/components/TransactionTable.vue'
@@ -113,9 +112,6 @@ const tableList = computed(() => {
     .filter((income) => !selectedCategory.value || income.category === selectedCategory.value)
 })
 
-// 圓餅圖
-const { pieOption } = usePieChart(categories, categorySums)
-
 onMounted(() => {
   fetchList()
 })
@@ -142,10 +138,11 @@ onMounted(() => {
   <el-row :gutter="20" v-loading="isLoading" element-loading-text="載入中，請稍後...">
     <el-col :span="10">
       <TransactionPieChart
-        title="收入"
+        title="支出"
         :month="selectedMonth"
         :totalAmount="totalIncome"
-        :option="pieOption"
+        :categories="categories"
+        :categorySums="categorySums"
       />
       <CategoryTable :data="categoryMap" />
     </el-col>

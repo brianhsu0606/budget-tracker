@@ -1,7 +1,7 @@
-import { ref, computed, watch, type ComputedRef } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
 import type { Transaction } from '@/types/type'
 
-export const usePagination = (list: ComputedRef<Transaction[]>) => {
+export const usePagination = (list: Ref<Transaction[]>) => {
   const pageSize = ref<number>(12)
   const currentPage = ref<number>(1)
 
