@@ -39,9 +39,11 @@ onUnmounted(() => {
     </el-header>
 
     <el-container>
-      <el-aside v-if="isAsideVisible" class="bg-[#57C273] w-40 sm:w-64">
-        <CommonAside @item-click="handleAsideClick" />
-      </el-aside>
+      <transition name="slide">
+        <el-aside v-if="isAsideVisible" class="bg-[#57C273] w-40 sm:w-64">
+          <CommonAside @item-click="handleAsideClick" />
+        </el-aside>
+      </transition>
       <el-main class="bg-gray-50">
         <router-view />
       </el-main>
@@ -49,4 +51,21 @@ onUnmounted(() => {
   </el-container>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+</style>
