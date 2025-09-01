@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Transaction } from '@/types/type'
 import { computed, onMounted, ref } from 'vue'
+import { useSixMonthSummary } from '@/composables/useSixMonthSummary'
 import expenseApi from '@/apis/expense'
 import incomeApi from '@/apis/income'
-import dayjs from 'dayjs'
 
 const expenseList = ref<Transaction[]>([])
 const incomeList = ref<Transaction[]>([])
@@ -23,31 +23,10 @@ const fetchIncomeList = async () => {
   }
 }
 
-// 產生近六個月的月份陣列
-const lastSixMonths = computed(() => {
-  return Array.from({ length: 6 }).map((_, i) => {
-    return dayjs()
-      .subtract(5 - i, 'month')
-      .format('YYYY-MM')
-  })
-})
-
-// 對應每個月份，計算收入與支出總和
-const incomeByMonth = computed(() => {
-  return lastSixMonths.value.map((month) => {
-    return incomeList.value
-      .filter((item) => dayjs(item.date).format('YYYY-MM') === month)
-      .reduce((sum, item) => sum + item.amount, 0)
-  })
-})
-
-const expenseByMonth = computed(() => {
-  return lastSixMonths.value.map((month) => {
-    return expenseList.value
-      .filter((item) => dayjs(item.date).format('YYYY-MM') === month)
-      .reduce((sum, item) => sum + item.amount, 0)
-  })
-})
+const { lastSixMonths, incomeByMonth, expenseByMonth, monthSummary } = useSixMonthSummary(
+  incomeList,
+  expenseList,
+)
 
 const chartOptions = computed(() => ({
   tooltip: { trigger: 'axis' },
@@ -74,21 +53,6 @@ const chartOptions = computed(() => ({
   ],
 }))
 
-// 將資料組合成卡片需要的格式
-const monthSummary = computed(() =>
-  lastSixMonths.value.map((month, idx) => {
-    const income = incomeByMonth.value[idx]
-    const expense = expenseByMonth.value[idx]
-    const balance = income - expense
-    return {
-      month,
-      income,
-      expense,
-      balance,
-      balanceColor: balance > 0 ? 'text-green-600' : balance < 0 ? 'text-red-600' : 'text-gray-600',
-    }
-  }),
-)
 onMounted(() => {
   fetchIncomeList()
   fetchExpenseList()
@@ -97,12 +61,13 @@ onMounted(() => {
 
 <template>
   <el-card class="mb-4">
+    <!-- 表格 -->
     <h3 class="text-xl font-bold mb-4 text-center">近 6 個月收支紀錄</h3>
     <el-table
       :data="monthSummary.slice().reverse()"
-      stripe
       style="width: 100%"
       class="text-lg font-bold"
+      stripe
       border
     >
       <el-table-column prop="month" label="月份" />
@@ -124,7 +89,7 @@ onMounted(() => {
       </el-table-column>
       <el-table-column prop="balance" label="結餘" align="right" header-align="left">
         <template #default="{ row }">
-          <span :class="row.balanceColor">
+          <span :class="[row.balance > 0 ? 'text-green-600' : 'text-red-600']">
             {{ row.balance.toLocaleString() }}
           </span>
         </template>
@@ -132,6 +97,7 @@ onMounted(() => {
     </el-table>
   </el-card>
 
+  <!-- 折線圖 -->
   <el-card class="relative">
     <h3 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">近 6 個月收支分析</h3>
     <v-chart :option="chartOptions" autoresize style="height: 300px" />
