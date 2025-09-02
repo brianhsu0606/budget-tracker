@@ -8,12 +8,13 @@ const initDB = async () => {
   try {
     console.log("資料庫初始化...");
 
-    await Expense.deleteMany({});
-    await Income.deleteMany({});
-    await Expense.insertMany(defaultExpenses);
-    await Income.insertMany(defaultIncomes);
+    const hasData = await Expense.findOne();
 
-    await initUser();
+    if (!hasData) {
+      await Expense.insertMany(defaultExpenses);
+      await Income.insertMany(defaultIncomes);
+      await initUser();
+    }
   } catch (error) {
     console.error("初始資料有問題:", error);
   }
