@@ -48,7 +48,7 @@ const handleSubmit = async () => {
       <img
         :src="`/src/assets/images/avatars/${profileForm.avatar}`"
         alt="頭貼"
-        class="w-40 h-40 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition block mx-auto mb-4"
+        class="w-40 h-40 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition block mx-auto mb-4"
         @click="avatarDialogVisible = true"
       />
 
@@ -59,7 +59,7 @@ const handleSubmit = async () => {
             :key="avatar"
             :src="`/src/assets/images/avatars/${avatar}`"
             alt="頭貼選項"
-            class="w-20 h-20 sm:w-28 sm:h-28 rounded-xl cursor-pointer border border-gray-500 hover:shadow-lg transition"
+            class="w-20 h-20 sm:w-28 sm:h-28 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition"
             @click="selectAvatar(avatar)"
           />
         </div>
