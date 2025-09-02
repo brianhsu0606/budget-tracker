@@ -92,8 +92,8 @@ const handleLogin = async () => {
 
     <el-col :xs="24" :sm="24" :md="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">
-        <el-card class="px-4 py-2 rounded-xl min-w-[380px] max-w-[540px]">
-          <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
+        <el-card class="px-4 py-2 rounded-xl min-w-[460px]">
+          <h2 class="text-2xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 登入表單 -->
           <transition name="fade-slide" mode="out-in">
