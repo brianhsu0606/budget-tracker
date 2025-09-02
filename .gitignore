@@ -22,6 +22,7 @@ lerna-debug.log*
 # =====================
 # 忽略前後端所有 .env
 *.env
+*.env.production
 
 # =====================
 # OS / Editor
@@ -42,9 +43,3 @@ lerna-debug.log*
 coverage/
 cypress/videos/
 cypress/screenshots/
-
-# =====================
-# Data / Default files
-# =====================
-# 避免上傳開發測試資料
-data/
