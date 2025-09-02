@@ -47,13 +47,13 @@ const handleSubmit = async () => {
 
 <template>
   <div class="overflow-x-auto">
-    <el-card class="min-w-[360px] sm:w-1/2 mx-auto mt-6 p-4">
-      <h2 class="text-2xl font-bold ml-4 mb-4">個人資訊</h2>
+    <el-card class="min-w-[360px] sm:w-[500px] 2xl:w-[550px] mx-auto mt-10 p-4">
+      <h2 class="text-2xl font-bold mb-2">個人資訊</h2>
       <!-- 頭貼 -->
       <img
         :src="avatarSrc"
         alt="頭貼"
-        class="w-40 h-40 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition block mx-auto mb-4"
+        class="w-40 h-40 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition block mx-auto mb-6"
         @click="avatarDialogVisible = true"
       />
 
