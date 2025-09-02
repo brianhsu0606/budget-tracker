@@ -7,11 +7,11 @@ const router = useRouter()
 const isAsideVisible = ref<boolean>(true)
 
 const checkScreen = () => {
-  isAsideVisible.value = window.innerWidth >= 1024
+  isAsideVisible.value = window.innerWidth >= 640
 }
 const handleAsideClick = (route: string) => {
   router.push(route)
-  if (window.innerWidth < 1024) {
+  if (window.innerWidth < 640) {
     isAsideVisible.value = false
   }
 }

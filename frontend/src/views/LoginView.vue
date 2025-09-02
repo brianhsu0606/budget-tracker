@@ -83,15 +83,16 @@ const handleLogin = async () => {
   <el-row class="h-full">
     <el-col
       :xs="0"
-      :lg="12"
+      :sm="0"
+      :md="12"
       class="bg-gradient-to-br from-green-300 to-green-600 flex justify-center items-center"
     >
       <img src="/src/assets/images/login.png" alt="登入圖片" class="max-w-[80%]" />
     </el-col>
 
-    <el-col :xs="24" :lg="12" class="bg-green-100">
+    <el-col :xs="24" :sm="24" :md="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">
-        <el-card class="px-4 py-2 rounded-xl w-[85%] sm:w-1/2 max-w-[540px]">
+        <el-card class="px-4 py-2 rounded-xl min-w-[380px] max-w-[540px]">
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 帳號登入表單 -->

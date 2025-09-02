@@ -8,7 +8,7 @@ const router = useRouter()
 
 const handleLogout = () => {
   userStore.logout()
-  ElMessage.success('登出成功')
+  ElMessage.success('登出成功！')
   router.push('/login')
 }
 </script>
