@@ -96,7 +96,13 @@ const handleLogin = async () => {
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 帳號登入表單 -->
-          <el-form v-if="isLogin" ref="loginFormRef" :model="loginForm" :rules="loginRules">
+          <el-form
+            v-if="isLogin"
+            ref="loginFormRef"
+            :model="loginForm"
+            :rules="loginRules"
+            @keyup.enter="handleLogin"
+          >
             <el-form-item prop="username">
               <el-input v-model="loginForm.username" prefix-icon="User" placeholder="請輸入帳號" />
             </el-form-item>
@@ -138,7 +144,13 @@ const handleLogin = async () => {
           </el-form>
 
           <!-- 帳號註冊表單 -->
-          <el-form v-else ref="registerFormRef" :model="registerForm" :rules="registerRules">
+          <el-form
+            v-else
+            ref="registerFormRef"
+            :model="registerForm"
+            :rules="registerRules"
+            @keyup.enter="handleRegister"
+          >
             <el-form-item prop="username">
               <el-input
                 v-model="registerForm.username"
