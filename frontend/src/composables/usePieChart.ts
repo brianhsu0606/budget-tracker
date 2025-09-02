@@ -13,12 +13,12 @@ export const usePieChart = (
       '#f87171', // red-400
       '#facc15', // yellow-400
       '#fb923c', // orange-400
-      '#9CA3AF', // gray-400
+      '#bae6fd', // sky-200
     ],
     income: [
       '#4ade80', // green-400
       '#f87171', // red-400
-      '#9CA3AF', // gray-400
+      '#bae6fd', // sky-200
     ],
   }
 

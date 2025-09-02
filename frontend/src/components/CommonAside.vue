@@ -31,22 +31,23 @@ const avatarSrc = computed(() => {
 </script>
 
 <template>
+  <!-- 個人資訊 -->
   <div class="h-[25vh] flex flex-col items-center justify-center border-b border-gray-300">
-    <!-- 頭貼 -->
     <img
       :src="avatarSrc"
       alt="頭貼"
       class="w-24 h-24 rounded-xl mb-2 border-2 border-white shadow"
     />
-    <!-- 顯示名稱 -->
     <h3 class="text-xl font-bold">{{ userStore.displayName }}</h3>
   </div>
+
+  <!-- 導航欄 -->
   <el-menu :default-active="activePath" router class="bg-green-50">
     <el-menu-item
       v-for="page in pageList"
       :key="page.path"
       :index="page.path"
-      class="hover:bg-[#E6F4EA] flex gap-4 items-center"
+      class="hover:bg-[#E6F4EA] flex gap-4 items-center text-gray-700 border-b border-gray-300;"
       @click="handleClick(page.path)"
     >
       <h3 class="text-lg font-medium ml-2">{{ page.label }}</h3>
@@ -57,11 +58,8 @@ const avatarSrc = computed(() => {
 
 <style scoped lang="scss">
 .el-menu-item {
-  color: #333333;
-  border-bottom: 0.5px solid gray;
-
   &.is-active {
-    @apply bg-[#BFE6C8];
+    @apply bg-[#BFE6C8] text-gray-700;
   }
 }
 </style>

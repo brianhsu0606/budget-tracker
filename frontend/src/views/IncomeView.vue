@@ -70,7 +70,7 @@ const totalIncome = computed(() => {
 const categories: Category[] = [
   { key: 'salary', title: '薪水', icon: 'Money', color: 'bg-green-400' },
   { key: 'stock', title: '股票', icon: 'DataLine', color: 'bg-red-400' },
-  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
+  { key: 'other', title: '其他', icon: 'Document', color: 'bg-sky-200' },
 ]
 
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
@@ -118,7 +118,7 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <el-card class="mb-4">
-    <header class="flex flex-col sm:flex-row justify-between items-first gap-4">
+    <header class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
       <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4"> 新增收入 </el-button>
       <h3 class="text-2xl font-semibold text-center order-first sm:order-none">收入分析</h3>
       <el-date-picker

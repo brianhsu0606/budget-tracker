@@ -73,7 +73,7 @@ const categories: Category[] = [
   { key: 'entertainment', title: '娛樂', icon: 'SwitchFilled', color: 'bg-red-400' },
   { key: 'shopping', title: '購物', icon: 'Handbag', color: 'bg-yellow-400' },
   { key: 'daily', title: '日常', icon: 'Box', color: 'bg-orange-400' },
-  { key: 'other', title: '其他', icon: 'Document', color: 'bg-gray-400' },
+  { key: 'other', title: '其他', icon: 'Document', color: 'bg-sky-200' },
 ]
 
 // 計算各分類的總金額，物件形式 { 'food': 1000, 'daily': 200 }
@@ -121,7 +121,7 @@ onMounted(() => {
 <template>
   <!-- Header 新增按鈕、月份篩選 -->
   <el-card class="mb-4">
-    <header class="flex flex-col sm:flex-row justify-between items-first gap-4">
+    <header class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
       <el-button @click="handleAdd" type="primary" class="text-lg h-10 p-4">新增支出</el-button>
       <h3 class="text-2xl font-semibold text-center order-first sm:order-none">支出分析</h3>
       <el-date-picker

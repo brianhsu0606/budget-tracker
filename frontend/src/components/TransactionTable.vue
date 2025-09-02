@@ -22,7 +22,7 @@ const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(lis
 </script>
 
 <template>
-  <div class="overflow-x-auto shadow-lg border-x rounded-md sm:border-none sm:rounded-none">
+  <div class="overflow-x-auto">
     <el-card class="min-w-[600px]">
       <!-- 分類按鈕 -->
       <header class="flex mb-4">
