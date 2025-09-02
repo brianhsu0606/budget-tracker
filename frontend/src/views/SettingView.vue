@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Profile } from '@/types/type'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
 import profileApi from '@/apis/profile'
@@ -20,6 +20,11 @@ const rules = {
 }
 
 const avatars = ['avatar1.jpg', 'avatar2.jpg', 'avatar3.jpg', 'avatar4.jpg', 'avatar5.jpg']
+
+const avatarSrc = computed(() => {
+  const avatar = profileForm.value.avatar || 'avatar1.jpg'
+  return `/images/avatars/${avatar}`
+})
 
 // 選擇頭貼
 const avatarDialogVisible = ref<boolean>(false)
@@ -46,7 +51,7 @@ const handleSubmit = async () => {
       <h2 class="text-2xl font-bold ml-4 mb-4">個人資訊</h2>
       <!-- 頭貼 -->
       <img
-        :src="`/src/assets/images/avatars/${profileForm.avatar}`"
+        :src="avatarSrc"
         alt="頭貼"
         class="w-40 h-40 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition block mx-auto mb-4"
         @click="avatarDialogVisible = true"
@@ -57,7 +62,7 @@ const handleSubmit = async () => {
           <img
             v-for="avatar in avatars"
             :key="avatar"
-            :src="`/src/assets/images/avatars/${avatar}`"
+            :src="`/images/avatars/${avatar}`"
             alt="頭貼選項"
             class="w-20 h-20 sm:w-28 sm:h-28 rounded-xl cursor-pointer border-2 border-gray-300 hover:shadow-md hover:border-green-500 transition"
             @click="selectAvatar(avatar)"

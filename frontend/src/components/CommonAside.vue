@@ -24,9 +24,8 @@ const pageList = [
 ]
 
 const avatarSrc = computed(() => {
-  return userStore.avatar
-    ? `/src/assets/images/avatars/${userStore.avatar}`
-    : `/src/assets/images/avatars/avatar1.jpg`
+  const avatar = userStore.avatar || 'avatar1.jpg'
+  return `/images/avatars/${avatar}`
 })
 </script>
 
