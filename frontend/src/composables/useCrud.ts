@@ -53,6 +53,7 @@ export const useCrud = (
         const newItem = await addAPi(dialog.form)
         list.value.unshift(newItem)
       }
+      list.value.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       dialog.isVisible = false
       ElMessage.success(dialog.isEdit ? '編輯成功' : '新增成功')
     } catch (error) {
