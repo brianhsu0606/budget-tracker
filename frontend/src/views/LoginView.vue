@@ -81,7 +81,13 @@ const handleLogin = async () => {
 
 <template>
   <el-row class="h-full">
-    <el-col :xs="0" :lg="12" class="bg-green-300"></el-col>
+    <el-col
+      :xs="0"
+      :lg="12"
+      class="bg-gradient-to-br from-green-300 to-green-600 flex justify-center items-center"
+    >
+      <img src="/src/assets/images/login.png" alt="登入圖片" class="max-w-[80%]" />
+    </el-col>
 
     <el-col :xs="24" :lg="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">

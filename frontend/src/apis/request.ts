@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
 
 const request = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 })
 
 request.interceptors.request.use((config) => {

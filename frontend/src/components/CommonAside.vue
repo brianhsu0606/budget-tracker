@@ -32,7 +32,9 @@ const avatarSrc = computed(() => {
 
 <template>
   <!-- 個人資訊 -->
-  <div class="h-[25vh] flex flex-col items-center justify-center border-b border-gray-300">
+  <div
+    class="h-[25vh] 2xl:h-[20vh] flex flex-col items-center justify-center border-b-2 border-gray-300"
+  >
     <img
       :src="avatarSrc"
       alt="頭貼"
@@ -47,7 +49,7 @@ const avatarSrc = computed(() => {
       v-for="page in pageList"
       :key="page.path"
       :index="page.path"
-      class="hover:bg-[#E6F4EA] flex gap-4 items-center text-gray-700 border-b border-gray-300;"
+      class="hover:bg-[#E6F4EA] flex gap-4 items-center text-gray-700 border-b-2 border-gray-300;"
       @click="handleClick(page.path)"
     >
       <h3 class="text-lg font-medium ml-2">{{ page.label }}</h3>
