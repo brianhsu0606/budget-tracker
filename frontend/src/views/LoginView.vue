@@ -95,113 +95,138 @@ const handleLogin = async () => {
         <el-card class="px-4 py-2 rounded-xl min-w-[380px] max-w-[540px]">
           <h2 class="text-xl font-semibold text-center mb-4">記帳小幫手</h2>
 
-          <!-- 帳號登入表單 -->
-          <el-form
-            v-if="isLogin"
-            ref="loginFormRef"
-            :model="loginForm"
-            :rules="loginRules"
-            @keyup.enter="handleLogin"
-          >
-            <el-form-item prop="username">
-              <el-input v-model="loginForm.username" prefix-icon="User" placeholder="請輸入帳號" />
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input
-                v-model="loginForm.password"
-                :type="showPassword ? 'text' : 'password'"
-                prefix-icon="Lock"
-                placeholder="請輸入密碼"
-              >
-                <template #suffix>
-                  <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
-                    <View />
-                  </el-icon>
-                </template>
-              </el-input>
-            </el-form-item>
-            <el-button
-              @click="handleLogin"
-              type="primary"
-              class="w-full h-10 text-base"
-              :loading="isLoading"
+          <!-- 登入表單 -->
+          <transition name="fade-slide" mode="out-in">
+            <el-form
+              v-if="isLogin"
+              ref="loginFormRef"
+              :model="loginForm"
+              :rules="loginRules"
+              @keyup.enter="handleLogin"
             >
-              登入
-            </el-button>
-
-            <el-divider>或</el-divider>
-
-            <!-- 跳轉至 註冊 -->
-            <span class="text-base font-medium">
-              沒有帳號嗎？
-              <span
-                @click="isLogin = !isLogin"
-                class="text-green-600 cursor-pointer hover:underline"
-              >
-                註冊
-              </span>
-            </span>
-          </el-form>
-
-          <!-- 帳號註冊表單 -->
-          <el-form
-            v-else
-            ref="registerFormRef"
-            :model="registerForm"
-            :rules="registerRules"
-            @keyup.enter="handleRegister"
-          >
-            <el-form-item prop="username">
-              <el-input
-                v-model="registerForm.username"
-                prefix-icon="User"
-                placeholder="請輸入帳號"
-              />
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input
-                v-model="registerForm.password"
-                :type="showPassword ? 'text' : 'password'"
-                prefix-icon="Lock"
-                placeholder="請輸入密碼"
-              >
-                <template #suffix>
-                  <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
-                    <View />
-                  </el-icon>
-                </template>
-              </el-input>
-            </el-form-item>
-            <el-button
-              @click="handleRegister"
-              type="primary"
-              class="w-full h-10 text-base"
-              :loading="isLoading"
-            >
-              註冊
-            </el-button>
-
-            <el-divider>或</el-divider>
-
-            <!-- 跳轉至 登入 -->
-            <span class="text-base font-medium">
-              已經有帳號了？
-              <span
-                @click="isLogin = !isLogin"
-                class="text-green-600 cursor-pointer hover:underline"
+              <el-form-item prop="username">
+                <el-input
+                  v-model="loginForm.username"
+                  prefix-icon="User"
+                  placeholder="請輸入帳號"
+                />
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input
+                  v-model="loginForm.password"
+                  :type="showPassword ? 'text' : 'password'"
+                  prefix-icon="Lock"
+                  placeholder="請輸入密碼"
+                >
+                  <template #suffix>
+                    <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
+                      <View />
+                    </el-icon>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-button
+                @click="handleLogin"
+                type="primary"
+                class="w-full h-10 text-base"
+                :loading="isLoading"
               >
                 登入
+              </el-button>
+
+              <el-divider>或</el-divider>
+
+              <span class="text-base font-medium">
+                沒有帳號嗎？
+                <span
+                  @click="isLogin = !isLogin"
+                  class="text-green-600 cursor-pointer hover:underline"
+                >
+                  註冊
+                </span>
               </span>
-            </span>
-          </el-form>
+            </el-form>
+
+            <!-- 註冊表單 -->
+            <el-form
+              v-else
+              ref="registerFormRef"
+              :model="registerForm"
+              :rules="registerRules"
+              @keyup.enter="handleRegister"
+            >
+              <el-form-item prop="username">
+                <el-input
+                  v-model="registerForm.username"
+                  prefix-icon="User"
+                  placeholder="請輸入帳號"
+                />
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input
+                  v-model="registerForm.password"
+                  :type="showPassword ? 'text' : 'password'"
+                  prefix-icon="Lock"
+                  placeholder="請輸入密碼"
+                >
+                  <template #suffix>
+                    <el-icon @click="showPassword = !showPassword" class="cursor-pointer">
+                      <View />
+                    </el-icon>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-button
+                @click="handleRegister"
+                type="primary"
+                class="w-full h-10 text-base"
+                :loading="isLoading"
+              >
+                註冊
+              </el-button>
+
+              <el-divider>或</el-divider>
+
+              <span class="text-base font-medium">
+                已經有帳號了？
+                <span
+                  @click="isLogin = !isLogin"
+                  class="text-green-600 cursor-pointer hover:underline"
+                >
+                  登入
+                </span>
+              </span>
+            </el-form>
+          </transition>
         </el-card>
       </div>
     </el-col>
   </el-row>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .el-input {
   @apply w-full h-10 text-base;
+}
+
+.fade-slide-enter-from {
+  transform: translateX(50%);
+  opacity: 0;
+}
+.fade-slide-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+.fade-slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+.fade-slide-leave-to {
+  transform: translateX(-50%);
+  opacity: 0;
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.2s ease;
 }
 </style>
