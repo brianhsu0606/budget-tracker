@@ -98,7 +98,11 @@ onMounted(() => {
 
   <!-- 折線圖 -->
   <div class="overflow-x-auto">
-    <el-card class="relative min-w-[500px]">
+    <el-card
+      v-loading="isExpenseLoading && isIncomeLoading"
+      element-loading-text="載入中，請稍後..."
+      class="relative min-w-[500px]"
+    >
       <h3 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">近 6 個月收支分析</h3>
       <v-chart :option="chartOptions" autoresize style="height: 300px" />
     </el-card>
