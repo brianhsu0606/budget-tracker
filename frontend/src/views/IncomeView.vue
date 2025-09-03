@@ -159,15 +159,15 @@ onMounted(() => {
   </el-row>
 
   <!-- 表單 dialog-->
-  <el-dialog
-    v-model="dialog.isVisible"
-    width="90%"
-    class="sm:w-1/2"
-    v-loading="isLoading"
-    element-loading-text="載入中，請稍後..."
-  >
+  <el-dialog v-model="dialog.isVisible" width="90%" class="sm:w-1/2">
     <h3 class="text-xl font-bold mb-4">{{ dialog.isEdit ? '編輯收入' : '新增收入' }}</h3>
-    <el-form ref="formRef" :model="dialog.form" :rules="rules">
+    <el-form
+      ref="formRef"
+      :model="dialog.form"
+      :rules="rules"
+      v-loading="isLoading"
+      element-loading-text="載入中，請稍後..."
+    >
       <el-form-item prop="date" label="日期">
         <el-date-picker v-model="dialog.form.date" />
       </el-form-item>
