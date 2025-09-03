@@ -84,15 +84,15 @@ const handleLogin = async () => {
     <el-col
       :xs="0"
       :sm="0"
-      :md="12"
+      :lg="12"
       class="bg-gradient-to-br from-green-300 to-green-600 flex justify-center items-center"
     >
       <img src="/images/login.png" alt="登入圖片" class="max-w-[80%]" />
     </el-col>
 
-    <el-col :xs="24" :sm="24" :md="12" class="bg-green-100">
+    <el-col :xs="24" :sm="24" :lg="12" class="bg-green-100">
       <div class="flex justify-center items-center h-full">
-        <el-card class="px-4 py-2 rounded-xl min-w-[460px]">
+        <el-card class="px-4 py-2 rounded-xl w-[90%] sm:w-[50%] 2xl:w-[40%]">
           <h2 class="text-2xl font-semibold text-center mb-4">記帳小幫手</h2>
 
           <!-- 登入表單 -->
@@ -133,9 +133,7 @@ const handleLogin = async () => {
               >
                 登入
               </el-button>
-
               <el-divider>或</el-divider>
-
               <span class="text-base font-medium">
                 沒有帳號嗎？
                 <span
@@ -184,9 +182,7 @@ const handleLogin = async () => {
               >
                 註冊
               </el-button>
-
               <el-divider>或</el-divider>
-
               <span class="text-base font-medium">
                 已經有帳號了？
                 <span
