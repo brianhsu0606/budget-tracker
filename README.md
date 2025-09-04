@@ -2,8 +2,9 @@
 
 此專案為個人財務管理系統，提供收支紀錄與分類統計功能，並透過圖表呈現收支，方便使用者快速掌握財務狀況。
 
-## 專案連結：https://budget-tracker-ilsy19yqd-brianhsu0606s-projects.vercel.app/login
+## 專案連結
 
+https://budget-tracker-3uui909e8-brianhsu0606s-projects.vercel.app  
 測試帳號：test  
 測試密碼：12345
 

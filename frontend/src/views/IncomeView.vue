@@ -159,7 +159,7 @@ onMounted(() => {
   </el-row>
 
   <!-- 表單 dialog-->
-  <el-dialog v-model="dialog.isVisible" width="90%" class="sm:w-1/2">
+  <el-dialog v-model="dialog.isVisible" class="w-[90%] sm:w-1/2 2xl:w-1/3">
     <h3 class="text-xl font-bold mb-4">{{ dialog.isEdit ? '編輯收入' : '新增收入' }}</h3>
     <el-form
       ref="formRef"
