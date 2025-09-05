@@ -15,17 +15,17 @@ https://budget-tracker-3uui909e8-brianhsu0606s-projects.vercel.app
 
 ## 安裝依賴
 
-### 前端
-
-```sh
-cd frontend
-pnpm install
-```
-
 ### 後端
 
 ```sh
 cd backend
+pnpm install
+```
+
+### 前端
+
+```sh
+cd frontend
 pnpm install
 ```
 

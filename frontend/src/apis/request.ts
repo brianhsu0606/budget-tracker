@@ -5,16 +5,21 @@ const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 })
 
-request.interceptors.request.use((config) => {
-  const userStore = useUserStore()
-  const token = userStore.token
+request.interceptors.request.use(
+  (config) => {
+    const userStore = useUserStore()
+    const token = userStore.token
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-
-  return config
-})
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    console.error('請求攔截器錯誤:', error)
+    return Promise.reject(error)
+  },
+)
 
 request.interceptors.response.use(
   (res) => {
