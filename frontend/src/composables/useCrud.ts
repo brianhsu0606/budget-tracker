@@ -21,7 +21,6 @@ export const useCrud = (
       list.value = await getApi()
     } catch (error) {
       ElMessage.error(getErrorMessage(error, '讀取資料失敗'))
-      console.error(error)
     } finally {
       isLoading.value = false
     }
@@ -58,7 +57,6 @@ export const useCrud = (
       ElMessage.success(dialog.isEdit ? '編輯成功' : '新增成功')
     } catch (error) {
       ElMessage.error(getErrorMessage(error, dialog.isEdit ? '編輯失敗' : '新增失敗'))
-      console.error(error)
     } finally {
       isLoading.value = false
     }
@@ -80,7 +78,6 @@ export const useCrud = (
       // ElMessageBox 按取消會進入 catch，可以不用處理
       if (error !== 'cancel') {
         ElMessage.error(getErrorMessage(error, '刪除失敗'))
-        console.error(error)
       }
     } finally {
       isLoading.value = false

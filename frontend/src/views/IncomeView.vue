@@ -151,9 +151,9 @@ onMounted(() => {
     <el-col :sm="24" :lg="14">
       <TransactionTable
         :list="tableList"
-        :category="selectedCategory"
-        :categories="categories"
         :month="selectedMonth"
+        :categories="categories"
+        :selectedCategory="selectedCategory"
         @row-click="handleEdit"
         @category-change="handleCategoryChange"
       />

@@ -8,7 +8,7 @@ const props = defineProps<{
   list: Transaction[]
   categories: Category[]
   month: string
-  category: string | null
+  selectedCategory: string | null
 }>()
 
 const listRef = toRef(props, 'list')
@@ -31,8 +31,8 @@ const { pageSize, currentPage, pagedList, handlePageChange } = usePagination(lis
           @click="emit('category-change', button.key)"
           type="primary"
           :key="button.key"
+          :class="{ '!bg-green-900': selectedCategory === button.key }"
           class="flex-1"
-          :class="{ '!bg-green-900': category === button.key }"
         >
           {{ button.title }}
         </el-button>
