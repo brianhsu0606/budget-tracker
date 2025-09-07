@@ -40,7 +40,7 @@ onUnmounted(() => {
 
     <el-container>
       <transition name="slide">
-        <el-aside v-if="isAsideVisible" class="bg-[#57C273] w-40 sm:w-64">
+        <el-aside v-if="isAsideVisible" class="bg-[#57C273] w-40 sm:w-56 2xl:w-64">
           <CommonAside @item-click="handleAsideClick" />
         </el-aside>
       </transition>
