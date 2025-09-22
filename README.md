@@ -4,7 +4,7 @@
 
 ## 專案連結
 
-https://budget-tracker-sigma-liart.vercel.app
+https://budget-tracker-sigma-liart.vercel.app  
 測試帳號：test  
 測試密碼：12345
 

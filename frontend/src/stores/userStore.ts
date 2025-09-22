@@ -6,7 +6,6 @@ export const useUserStore = defineStore(
   'user',
   () => {
     const token = ref<string>('')
-    const username = ref<string>('')
     const displayName = ref<string>('')
     const avatar = ref<string>('')
 
@@ -25,7 +24,7 @@ export const useUserStore = defineStore(
       avatar.value = ''
     }
 
-    return { token, username, displayName, avatar, setToken, setUser, logout }
+    return { token, displayName, avatar, setToken, setUser, logout }
   },
   {
     persist: true,
